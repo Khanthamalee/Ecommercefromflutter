@@ -1,4 +1,5 @@
 # ecommerce
+#ยังไม่เสร็จค่อยๆเขียนไปจ้า
 
 A new Flutter project.
 
