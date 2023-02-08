@@ -1,3 +1,7 @@
+import 'package:ecommerce/controllers/popular_product_controller.dart';
+import 'package:ecommerce/directory/pages/main_goods_page.dart';
+import 'package:ecommerce/rountes/rounte_helper.dart';
+import 'package:ecommerce/util/app_constants.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
 import 'package:ecommerce/util/goodsitem.dart';
@@ -9,13 +13,23 @@ import 'package:ecommerce/widget/widget_detail_underimage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 
+//Detail PageView.builder
+
+// ignore: must_be_immutable
 class PopularGoodsDetail extends StatelessWidget {
-  const PopularGoodsDetail({super.key});
+  final int pageId;
+  const PopularGoodsDetail({Key? key, required this.pageId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product =
+        Get.find<PopularProductController>().popularProductList[pageId];
+    //print("page is id $pageId ");
+    //print("product name is ${product.name}");
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           //Image
@@ -25,10 +39,12 @@ class PopularGoodsDetail extends StatelessWidget {
               child: Container(
                 width: double.maxFinite,
                 height: DimensionStaticHeight(context, 350),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/image_ui/green.png"),
+                    image: NetworkImage(AppConstants.BASE_URL +
+                        AppConstants.UPLOAD_URL +
+                        product.img),
                   ),
                 ),
               )),
@@ -39,9 +55,13 @@ class PopularGoodsDetail extends StatelessWidget {
               right: DimensionStaticWidth(context, 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  AppIcon(icon: Icons.arrow_back_ios),
-                  AppIcon(icon: Icons.shopping_cart_outlined)
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Get.toNamed(RounteHelper.getInitial());
+                      },
+                      child: const AppIcon(icon: Icons.arrow_back_ios)),
+                  const AppIcon(icon: Icons.shopping_cart_outlined)
                 ],
               )),
           //Detail Under image
@@ -63,7 +83,7 @@ class PopularGoodsDetail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SumCardContainer(context, "แหนแดง"),
+                    SumCardContainer(context, product.name, product.stars),
                     DimensionheightWidget(context, 20),
                     BigText(
                       text: "Introduce",
@@ -74,7 +94,7 @@ class PopularGoodsDetail extends StatelessWidget {
                     Expanded(
                       child: SingleChildScrollView(
                         child: DetailUnderImage(
-                          text: DetailList[0].detail,
+                          text: product.description!,
                         ),
                       ),
                     ),
@@ -132,7 +152,7 @@ class PopularGoodsDetail extends StatelessWidget {
                   left: DimensionStaticWidth(context, 20),
                   right: DimensionStaticWidth(context, 20)),
               child: BigText(
-                text: "\$10 ! Add ti cart.",
+                text: "\$${product.price} | Add it cart.",
                 color: Colors.white,
               ),
               decoration: BoxDecoration(

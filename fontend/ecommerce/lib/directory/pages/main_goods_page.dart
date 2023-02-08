@@ -1,4 +1,4 @@
-import 'package:ecommerce/widget/WidgetPopular.dart';
+import 'package:ecommerce/widget/WidgetRecommended.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/widget/bigtext.dart';
 import 'package:ecommerce/widget/smalltext.dart';

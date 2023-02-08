@@ -1,3 +1,8 @@
+import 'package:ecommerce/controllers/recommended_product_controller.dart';
+import 'package:ecommerce/model/recommended_model.dart';
+import 'package:ecommerce/rountes/rounte_helper.dart';
+import 'package:ecommerce/util/app_constants.dart';
+import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
 import 'package:ecommerce/util/goodsitem.dart';
 import 'package:ecommerce/widget/CardContainer.dart';
@@ -7,20 +12,48 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 
-// ignore: non_constant_identifier_names
-Widget WidgetPopular(BuildContext context) {
-  return ListView.builder(
-    physics: const AlwaysScrollableScrollPhysics(),
-    shrinkWrap: true,
-    itemCount: GoodsItemsList.length,
-    itemBuilder: (context, index) {
-      return Container(
-        margin: EdgeInsets.only(
-          left: DimensionStaticWidth(context, 20),
-          right: DimensionStaticWidth(context, 20),
-          bottom: DimensionStaticHeight(context, 10),
-        ),
+class MyWidgetReccommended extends StatefulWidget {
+  const MyWidgetReccommended({super.key});
+
+  @override
+  State<MyWidgetReccommended> createState() => _MyWidgetReccommendedState();
+}
+
+class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<RecommendedProductController>(
+        builder: (recommendedProducts) {
+      return recommendedProducts.isLoaded
+          ? ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: recommendedProducts.recommendedProductList.length,
+              itemBuilder: (context, index) {
+                return WidgetRecommended(context, index,
+                    recommendedProducts.recommendedProductList[index]);
+              })
+          : CircularProgressIndicator(
+              color: AppColors.mainColor,
+            );
+    });
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget WidgetRecommended(
+      BuildContext context, int index, ProductModel recommendedProduct) {
+    return Container(
+      margin: EdgeInsets.only(
+        left: DimensionStaticWidth(context, 20),
+        right: DimensionStaticWidth(context, 20),
+        bottom: DimensionStaticHeight(context, 10),
+      ),
+      child: GestureDetector(
+        onTap: () {
+          Get.toNamed(RounteHelper.getRecommededGoods(index));
+        },
         child: Row(
           children: [
             Container(
@@ -31,9 +64,10 @@ Widget WidgetPopular(BuildContext context) {
                     BorderRadius.circular(DimensionStaticHeight(context, 20)),
                 color: Colors.white38,
                 image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(GoodsItemsList[index].directoryimage),
-                ),
+                    fit: BoxFit.cover,
+                    image: NetworkImage(AppConstants.BASE_URL +
+                        AppConstants.UPLOAD_URL +
+                        recommendedProduct.img!)),
               ),
             ),
             Expanded(
@@ -52,7 +86,7 @@ Widget WidgetPopular(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BigText(text: GoodsnamesList[index].title),
+                      BigText(text: recommendedProduct.name!),
                       DimensionheightWidget(context, 5),
                       SmallText(text: 'สายพันธุ์ เจริญลาภ'),
                       DimensionheightWidget(context, 10),
@@ -64,7 +98,7 @@ Widget WidgetPopular(BuildContext context) {
             ),
           ],
         ),
-      );
-    },
-  );
+      ),
+    );
+  }
 }

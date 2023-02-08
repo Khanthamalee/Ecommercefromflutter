@@ -10,7 +10,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../../widget/bigtext.dart';
 
-Widget SumCardContainer(BuildContext context, String text) {
+Widget SumCardContainer(BuildContext context, String text, int stars) {
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     BigText(text: text),
     DimensionheightWidget(context, 15),
@@ -18,7 +18,7 @@ Widget SumCardContainer(BuildContext context, String text) {
       children: [
         Wrap(
           children: List.generate(
-            5,
+            stars,
             (index) {
               return Icon(
                 Icons.star,
@@ -35,11 +35,15 @@ Widget SumCardContainer(BuildContext context, String text) {
       ],
     ),
     DimensionheightWidget(context, 20),
-    SubCardContainer("Normal", "1.7 km.", "32 min"),
+    SubCardContainer("Normal", "5.0 k.m", "32 min"),
   ]);
 }
 
-Widget SubCardContainer(String text1, String text2, String text3) {
+Widget SubCardContainer(
+  String text1,
+  String text2,
+  String text3,
+) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
