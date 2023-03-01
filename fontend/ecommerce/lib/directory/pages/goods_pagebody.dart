@@ -161,7 +161,7 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
         children: [
           GestureDetector(
             onTap: () {
-              Get.toNamed(RounteHelper.getPopularGoods(index));
+              Get.toNamed(RounteHelper.getPopularGoods(index, "home"));
             },
             child: Container(
               height: DimensionStaticHeight(context, 220),

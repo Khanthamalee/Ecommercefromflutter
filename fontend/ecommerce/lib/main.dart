@@ -2,6 +2,7 @@ import 'package:ecommerce/controllers/popular_product_controller.dart';
 import 'package:ecommerce/controllers/recommended_product_controller.dart';
 import 'package:ecommerce/directory/Goods/goods_detail_popular.dart';
 import 'package:ecommerce/directory/goods/Recommeneded_Goods_Detail.dart';
+import 'package:ecommerce/directory/pages/cart/cart_page.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Home-Pages',
-      home: const MainGoodPage(),
+      home: //CartPage()
+          const MainGoodPage(),
       initialRoute: RounteHelper.initial,
       getPages: RounteHelper.routes,
       //home: const PopularGoodsDetail(),

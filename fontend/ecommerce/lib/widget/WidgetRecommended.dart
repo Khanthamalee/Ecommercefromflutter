@@ -1,5 +1,5 @@
 import 'package:ecommerce/controllers/recommended_product_controller.dart';
-import 'package:ecommerce/model/recommended_model.dart';
+import 'package:ecommerce/model/product_models.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
 import 'package:ecommerce/util/app_constants.dart';
 import 'package:ecommerce/util/color.dart';

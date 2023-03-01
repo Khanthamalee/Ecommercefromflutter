@@ -39,7 +39,7 @@ class _MainGoodPageState extends State<MainGoodPage> {
                 Column(
                   children: [
                     BigText(
-                      text: "Noomalee",
+                      text: "Thailand",
                       color: AppColors.mainColor,
                     ),
                     DimensionheightWidget(context, 5),

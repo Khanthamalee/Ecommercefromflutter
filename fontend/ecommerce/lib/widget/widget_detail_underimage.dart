@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+//การสืบทอดคุณสมบัติของ class StatefulWidget คลาสแม่
 class DetailUnderImage extends StatefulWidget {
   final String text;
   const DetailUnderImage({Key? key, required this.text}) : super(key: key);
