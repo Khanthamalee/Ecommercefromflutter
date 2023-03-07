@@ -30,10 +30,11 @@ class PopularGoodsDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     var product =
         Get.find<PopularProductController>().popularProductList[pageId];
-    print("class PopularGoodsDetail  :product ${product.name}");
+    print("class PopularGoodsDetail  :product ${product.img}");
     //จำนวนเริ่มต้น = 0
     Get.find<PopularProductController>()
         .initProduct(product, Get.find<CartController>());
+    print("Popular product name is ${product.name}, id is ${product.id}");
     //print("page is id $pageId ");
     //print("product name is ${product.name}");
     return Scaffold(
@@ -50,9 +51,10 @@ class PopularGoodsDetail extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(AppConstants.BASE_URL +
+                    image: NetworkImage(product.img),
+                    /*image: NetworkImage(AppConstants.BASE_URL +
                         AppConstants.UPLOAD_URL +
-                        product.img),
+                        product.img),*/
                   ),
                 ),
               )),
@@ -81,7 +83,7 @@ class PopularGoodsDetail extends StatelessWidget {
                       },
                       child: Stack(
                         children: [
-                          AppIcon(icon: Icons.shopping_cart_outlined),
+                          const AppIcon(icon: Icons.shopping_cart_outlined),
                           controller.totalItems >= 1
                               ? Positioned(
                                   right: 0,

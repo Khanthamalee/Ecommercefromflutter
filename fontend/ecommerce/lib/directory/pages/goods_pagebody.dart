@@ -91,10 +91,13 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
           //Recommended text
           DimensionheightWidget(context, 20),
           Container(
-            margin: EdgeInsets.only(left: DimensionStaticWidth(context, 30)),
+            margin: EdgeInsets.only(
+              left: DimensionStaticWidth(context, 20),
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                DimensionwidthWidget(context, 15),
                 BigText(text: "Recommended"),
                 DimensionwidthWidget(context, 10),
                 Container(
@@ -114,12 +117,13 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
               ],
             ),
           ),
-          DimensionheightWidget(context, 10),
+          const MyWidgetReccommended(),
+          //DimensionheightWidget(context, 5),
           //List of goods and index
-          Container(
-            height: DimensionStaticHeight(context, 650),
-            child: const MyWidgetReccommended(),
-          ),
+          /*const SizedBox(
+            //height: DimensionStaticHeight(context, 650),
+            child: MyWidgetReccommended(),
+          ),*/
         ],
       ),
     );
@@ -189,9 +193,10 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
                       ? const Color(0xFF69c5df)
                       : const Color(0xFF9294cc),
                   image: DecorationImage(
-                      image: NetworkImage(AppConstants.BASE_URL +
+                      image: NetworkImage(popularProduct.img!),
+                      /*image: NetworkImage(AppConstants.BASE_URL +
                           AppConstants.UPLOAD_URL +
-                          popularProduct.img!),
+                          popularProduct.img!),*/
                       fit: BoxFit.cover)),
             ),
           ),

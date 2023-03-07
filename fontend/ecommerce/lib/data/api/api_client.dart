@@ -16,7 +16,7 @@ class ApiClient extends GetConnect implements GetxService {
     timeout = Duration(seconds: 20);
     token = AppConstants.TOKEN;
     _mainHeader = {
-      'Content-type': 'application/json; charset=UTF-8',
+      'Content-type': 'application/json; charset=UTF-16',
       'Authorization': 'Bearer $token',
     };
   }
@@ -25,7 +25,9 @@ class ApiClient extends GetConnect implements GetxService {
   ) async {
     try {
       Response response = await get(uri);
-      //print("1. uri : $uri ===");
+      print("1. baseUrl : $baseUrl");
+      print("2. uri : $uri ===");
+      print("response.body.runtimeType ${response.body.runtimeType}");
 
       return response;
     } catch (e) {

@@ -28,7 +28,7 @@ class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
         builder: (recommendedProducts) {
       return recommendedProducts.isLoaded
           ? ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: recommendedProducts.recommendedProductList.length,
               itemBuilder: (context, index) {
@@ -48,26 +48,28 @@ class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
       margin: EdgeInsets.only(
         left: DimensionStaticWidth(context, 20),
         right: DimensionStaticWidth(context, 20),
-        bottom: DimensionStaticHeight(context, 10),
+        bottom: DimensionStaticHeight(context, 20),
       ),
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(RounteHelper.getRecommededGoods(index));
+          Get.toNamed(RounteHelper.getRecommededGoods(index, "home"));
         },
         child: Row(
           children: [
             Container(
-              width: DimensionStaticWidth(context, 120),
+              width: DimensionStaticWidth(context, 140),
               height: DimensionStaticHeight(context, 120),
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(DimensionStaticHeight(context, 20)),
                 color: Colors.white38,
                 image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(AppConstants.BASE_URL +
+                  fit: BoxFit.cover,
+                  image: NetworkImage(recommendedProduct.img!),
+                  /*image: NetworkImage(AppConstants.BASE_URL +
                         AppConstants.UPLOAD_URL +
-                        recommendedProduct.img!)),
+                        recommendedProduct.img!)*/
+                ),
               ),
             ),
             Expanded(
@@ -80,8 +82,8 @@ class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
                     color: Colors.white),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      left: DimensionStaticWidth(context, 20),
-                      right: DimensionStaticWidth(context, 20)),
+                      left: DimensionStaticWidth(context, 15),
+                      right: DimensionStaticWidth(context, 10)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +91,7 @@ class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
                       BigText(text: recommendedProduct.name!),
                       DimensionheightWidget(context, 5),
                       SmallText(text: 'สายพันธุ์ เจริญลาภ'),
-                      DimensionheightWidget(context, 10),
+                      DimensionheightWidget(context, 5),
                       SubCardContainer("มีสินค้า", "5 k.m", "30 นาที")
                     ],
                   ),

@@ -54,7 +54,7 @@ class CartPage extends StatelessWidget {
               ],
             )),
         Positioned(
-            top: DimensionStaticHeight(context, 20 * 5),
+            top: DimensionStaticHeight(context, 20 * 6),
             left: DimensionStaticWidth(context, 20),
             right: DimensionStaticWidth(context, 20),
             bottom: 0,
@@ -81,15 +81,15 @@ class CartPage extends StatelessWidget {
                                       .popularProductList
                                       .indexOf(_CartList[index].product!);
                               if (popularIndex >= 0) {
-                                Get.toNamed(
-                                    RounteHelper.getPopularGoods(popularIndex,"cartpage"));
+                                Get.toNamed(RounteHelper.getPopularGoods(
+                                    popularIndex, "cartpage"));
                               } else {
                                 var recommendedIndex =
                                     Get.find<RecommendedProductController>()
                                         .recommendedProductList
                                         .indexOf(_CartList[index].product!);
                                 Get.toNamed(RounteHelper.getRecommededGoods(
-                                    recommendedIndex));
+                                    recommendedIndex, "cartpage"));
                               }
                             },
                             child: Container(
@@ -99,13 +99,14 @@ class CartPage extends StatelessWidget {
                                   bottom: DimensionStaticHeight(context, 10)),
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(_CartList[index].img!),
+                                    /*image: NetworkImage(
                                           AppConstants.BASE_URL +
                                               AppConstants.UPLOAD_URL +
-                                              _CartList[index].img!)
-                                      // AssetImage("assets/image_ui/corn.png")
-                                      ),
+                                              _CartList[index].img!)*/
+                                    // AssetImage("assets/image_ui/corn.png")
+                                  ),
                                   borderRadius: BorderRadius.circular(
                                       DimensionStaticHeight(context, 20))),
                             ),

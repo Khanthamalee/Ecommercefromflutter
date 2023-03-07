@@ -20,6 +20,7 @@ class CartController extends GetxController {
     if (_items.containsKey(product.id!)) {
       _items.update(product.id!, (value) {
         totalQuantity = value.quantity! + quantity;
+        print("totalQuantity : $totalQuantity");
         return CartModel(
           id: value.id,
           name: value.name,
@@ -52,8 +53,8 @@ class CartController extends GetxController {
         });
       } else {
         Get.snackbar(
-          "Item count",
-          "You should at least add an item in the cart!",
+          "กรุณาเลือกสินค้า",
+          "เพิ่มจำนวนอย่างน้อย 1 ชิ้นค่ะ",
           backgroundColor: AppColors.mainColor,
           colorText: Colors.white,
           duration: Duration(seconds: 1),
@@ -94,5 +95,14 @@ class CartController extends GetxController {
     return _items.entries.map((e) {
       return e.value;
     }).toList();
+  }
+
+  int get totalAmount {
+    var total = 0;
+
+    _items.forEach((key, value) {
+      total += value.quantity! * value.price!;
+    });
+    return total;
   }
 }

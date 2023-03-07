@@ -13,8 +13,8 @@ class RounteHelper {
   static String getInitial() => '$initial';
   static String getPopularGoods(int pageId, String page) =>
       '$popularGoods?pageId=$pageId&page=$page';
-  static String getRecommededGoods(int pageId) =>
-      '$recommendedGoods?pageId=$pageId';
+  static String getRecommededGoods(int pageId, String page) =>
+      '$recommendedGoods?pageId=$pageId&page=$page';
   static String getCartPage() => "$cartPage";
 
   static List<GetPage> routes = [
@@ -36,7 +36,9 @@ class RounteHelper {
         name: recommendedGoods,
         page: () {
           var pageId = Get.parameters['pageId'];
-          return RecommenededGoodsDetail(pageId: int.parse(pageId!));
+          var page = Get.parameters['page'];
+          return RecommenededGoodsDetail(
+              pageId: int.parse(pageId!), page: page!);
         },
         transition: Transition.fadeIn),
     GetPage(

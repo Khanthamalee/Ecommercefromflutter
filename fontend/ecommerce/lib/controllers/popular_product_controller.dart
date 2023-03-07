@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecommerce/controllers/car_controller.dart';
 import 'package:ecommerce/data/repository/popular_product_repo.dart';
 import 'package:ecommerce/model/cart_model.dart';
@@ -37,26 +39,30 @@ class PopularProductController extends GetxController {
 
   Future<void> getPopularProductList() async {
     Response response = await popularProductRepo.getPopularProductList();
+    //print("response.body out if: ${response.body}");
     if (response.statusCode == 200) {
-      //print("3. class PopularProductController _popularProductList : ${_popularProductList} ===");
-      //Build Model Nested Json
+      /* ในกรณีที่ response.body เป็น map อยู่แล้วใช้แบบนี้ได้
       _popularProductList = [];
-      // response.body เป็น dictionary
-      _popularProductList.addAll(Goods.fromJson(response.body).product);
-      //แต่ก่อน _isLoaded = fault; แต่ถ้าทำ _popularProductList.addAll ให้เป็น true
+      _popularProductList
+          .addAll(Goods.fromJson(response.body).product);*/
+
+      _popularProductList = Goods.fromJson(jsonDecode(response.body)).product;
+
+      //แต่ก่อน _isLoaded = false; แต่ถ้าทำ _popularProductList = Goods.fromJson(jsonDecode(response.body)).product; ให้เป็น true
       _isLoaded = true;
-      //print("response.body: ${response.body}");
 
       update();
-      //print("4. class PopularProductController  _popularProductList : ${_popularProductList} ===");
-    } else {}
+      print("4. _popularProductList : ${_popularProductList} ===");
+    } else {
+      print('Can not connect api');
+    }
   }
 
-  ///response.body : {total_size: 6, type_id: 2, offset: 0, products: [{id: 1, name: Nutritious fruit meal in china, description: This five red bases, two are dedicated to salami (fennel and regular), and there s a classic capricciosa or beef carpaccio. Blanco options include a mushroom, and a four-cheese extravaganza featuring great lobes of a tangy fior di latte they make in house every day (more on this later). Classic, precise, good.I think it s still better to think of this venue not as a pizzeria, but as Pizza, by Di Stasio.Rinaldo Di Stasio and Mallory Wall s empire, including the original restaurant and bar in St Kilda, Citta and now Carlton, is a designer label for dining., price: 12, stars: 4, img: images/ea9367e8a16f1d3e41d4a3ae9af2baff.png, location: Canada, British Columbia, created_at: 2021-11-17 10:09:08, updated_at: 2022-05-16 11:48:53, type_id: 2}, {id: 2, name: Sweet Dessert, description: The best sweet dessertThe quality and craftsmanship is on full show. The waiters  signature white tunics are///
-
+  //ถ้า input เป็น true ให้เพิ่ม +1 แต่ false ให้ลด -1
   void setQuantity(bool isIncrement) {
     if (isIncrement) {
       //print("isIncrement ${_quantity + 1}");
+
       _quantity = checkQuantity(_quantity + 1);
       print("number of items $_quantity");
     } else {
@@ -71,11 +77,11 @@ class PopularProductController extends GetxController {
   int checkQuantity(int quantity) {
     if ((_inCartItems + quantity) < 0) {
       Get.snackbar(
-        "Item count",
-        "You can't reduce more",
+        "สินค้า",
+        "ไม่สามารถลดจำนวนได้มากกว่านี้ค่ะ",
         backgroundColor: AppColors.mainColor,
         colorText: Colors.white,
-        //duration: Duration(seconds: 1),
+        duration: Duration(seconds: 1),
       );
       if (_inCartItems > 0) {
         _quantity = -_inCartItems;
@@ -84,11 +90,11 @@ class PopularProductController extends GetxController {
       return 0;
     } else if ((_inCartItems + quantity) > 20) {
       Get.snackbar(
-        "Item count",
-        "You can't add more",
+        "สินค้า",
+        "ไม่สามารถเพิ่มจำนวนได้มากกว่า 20 ชิ้นค่ะ",
         backgroundColor: AppColors.mainColor,
         colorText: Colors.white,
-        //duration: Duration(seconds: 1),
+        duration: Duration(seconds: 1),
       );
       return 20;
     } else {

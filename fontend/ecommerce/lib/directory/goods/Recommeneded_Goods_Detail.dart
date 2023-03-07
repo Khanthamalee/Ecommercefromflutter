@@ -21,7 +21,9 @@ import 'package:get/get.dart';
 
 class RecommenededGoodsDetail extends StatelessWidget {
   final int pageId;
-  const RecommenededGoodsDetail({Key? key, required this.pageId})
+  final String page;
+  const RecommenededGoodsDetail(
+      {Key? key, required this.pageId, required this.page})
       : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
     Get.find<PopularProductController>()
         .initProduct(product, Get.find<CartController>());
     //print("page is id $pageId ");
-    print("Recommended product name is ${product.name}");
+    print("Recommended product name is ${product.name} , id is ${product.id}");
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(slivers: [
@@ -44,7 +46,11 @@ class RecommenededGoodsDetail extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             GestureDetector(
                 onTap: () {
-                  Get.toNamed(RounteHelper.getInitial());
+                  if (page == "cartpage") {
+                    Get.toNamed(RounteHelper.getCartPage());
+                  } else {
+                    Get.toNamed(RounteHelper.getInitial());
+                  }
                 },
                 child: const AppIcon(icon: Icons.clear)),
             //const AppIcon(icon: Icons.shopping_cart_outlined)
@@ -56,7 +62,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                 },
                 child: Stack(
                   children: [
-                    AppIcon(icon: Icons.shopping_cart_outlined),
+                    const AppIcon(icon: Icons.shopping_cart_outlined),
                     Get.find<PopularProductController>().totalItems >= 1
                         ? Positioned(
                             right: 0,
@@ -134,7 +140,8 @@ class RecommenededGoodsDetail extends StatelessWidget {
           expandedHeight: DimensionStaticHeight(context, 300),
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
-              AppConstants.BASE_URL + AppConstants.UPLOAD_URL + product.img,
+              /*AppConstants.BASE_URL + AppConstants.UPLOAD_URL + product.img,*/
+              product.img,
               width: double.maxFinite,
               fit: BoxFit.cover,
             ),
