@@ -18,20 +18,19 @@ class RecommendedProductController extends GetxController {
         await recommendedProductRepo.getRecommendedProductList();
 
     if (response.statusCode == 200) {
-      //print("got RecommendedProducts");
-      //Build Model Nested Json
-      //_recommendedProductList = [];
-      //print(
-      //"response.body after _recommendedProductList= []; : ${response.body}");
+      /* ในกรณีที่ response.body เป็น map อยู่แล้วใช้แบบนี้ได้
+      _recommendedProductList = [];
+      _recommendedProductList
+          .addAll(Goods.fromJson(response.body).product);*/
       _recommendedProductList =
           Goods.fromJson(jsonDecode(response.body)).product;
       //print(_popularProductList);
       _isLoaded = true;
-      //print("2. class RecommendedProductController _recommendedProductList : ${_recommendedProductList} ====");
+      
       update();
       print("4. _recommendedProductList : ${_recommendedProductList} ===");
     } else {
-      //print("ไม่สามารถดึงข้อมูลจาก recommended ได้");
+      print("ไม่สามารถดึงข้อมูลจาก recommended ได้");
     }
   }
 }

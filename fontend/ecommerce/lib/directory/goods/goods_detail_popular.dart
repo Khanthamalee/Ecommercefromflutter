@@ -35,8 +35,7 @@ class PopularGoodsDetail extends StatelessWidget {
     Get.find<PopularProductController>()
         .initProduct(product, Get.find<CartController>());
     print("Popular product name is ${product.name}, id is ${product.id}");
-    //print("page is id $pageId ");
-    //print("product name is ${product.name}");
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -243,7 +242,7 @@ class PopularGoodsDetail extends StatelessWidget {
 
                   // ignore: sort_child_properties_last
                   child: BigText(
-                    text: "\$${product.price} | Add it cart.",
+                    text: "฿${product.price} | เพิ่มในตระกร้า",
                     color: Colors.white,
                   ),
 

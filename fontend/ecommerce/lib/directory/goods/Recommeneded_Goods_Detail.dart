@@ -189,7 +189,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                         iconsize: DimensionStaticHeight(context, 24)),
                   ),
                   BigText(
-                    text: "\$${product.price}  X ${controller.inCartItems}",
+                    text: "฿${product.price}  X ${controller.inCartItems}",
                     color: AppColors.mainBlackColor,
                     size: DimensionStaticHeight(context, 22),
                   ),
@@ -263,7 +263,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                           right: DimensionStaticWidth(context, 20)),
                       // ignore: sort_child_properties_last
                       child: BigText(
-                        text: "\$${product.price} ! Add ti cart.",
+                        text: "\฿${product.price} ! เพิ่มในตระกร้า",
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
