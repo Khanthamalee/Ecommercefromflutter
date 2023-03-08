@@ -46,6 +46,7 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
   @override
   void dispose() {
     pageController.dispose();
+    super.dispose();
   }
 
   @override
