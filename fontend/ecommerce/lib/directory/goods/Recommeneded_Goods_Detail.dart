@@ -34,6 +34,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
         .initProduct(product, Get.find<CartController>());
     //print("page is id $pageId ");
     print("Recommended product name is ${product.name} , id is ${product.id}");
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(slivers: [
@@ -46,8 +47,9 @@ class RecommenededGoodsDetail extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             GestureDetector(
                 onTap: () {
-                  if (page == "cartpage") {
-                    Get.toNamed(RounteHelper.getCartPage());
+                  if (page == "reccommendedcartpage") {
+                    Get.toNamed(RounteHelper.getCartPage(
+                        product.id, "reccommendedcartpage"));
                   } else {
                     Get.toNamed(RounteHelper.getInitial());
                   }
@@ -58,7 +60,10 @@ class RecommenededGoodsDetail extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   if (controller.totalItems >= 1)
-                    Get.toNamed(RounteHelper.getCartPage());
+                    Get.toNamed(RounteHelper.getCartPage(
+                        product.id, "reccommendedcartpage"));
+                  print(product.id);
+                  print("reccommendedcartpage");
                 },
                 child: Stack(
                   children: [
@@ -165,6 +170,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
       ]),
       bottomNavigationBar:
           GetBuilder<PopularProductController>(builder: (controller) {
+        //print("controller.inCartItems : ${controller.inCartItems}");
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -26,9 +26,9 @@ class RecommendedProductController extends GetxController {
           Goods.fromJson(jsonDecode(response.body)).product;
       //print(_popularProductList);
       _isLoaded = true;
-      
+
       update();
-      print("4. _recommendedProductList : ${_recommendedProductList} ===");
+      //print("4. _recommendedProductList : ${_recommendedProductList} ===");
     } else {
       print("ไม่สามารถดึงข้อมูลจาก recommended ได้");
     }

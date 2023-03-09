@@ -49,25 +49,25 @@ class _HomePageState extends State<HomePage> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
-        title: ("Home"),
+        title: ("หน้าหลัก"),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.archivebox_fill),
-        title: ("Archive"),
+        title: ("ประวัติ"),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.cart_fill),
-        title: ("Cart"),
+        title: ("ตระกร้า"),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person),
-        title: ("Me"),
+        title: ("ฉัน"),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),

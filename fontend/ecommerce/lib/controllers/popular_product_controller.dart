@@ -35,7 +35,14 @@ class PopularProductController extends GetxController {
   //จำนวนในรถเข็นล่าสุด inCartItems = 7
   int _inCartItems = 0;
   //getter return int เอาไปใช้งาน
-  int get inCartItems => _inCartItems + _quantity;
+
+  int get inCartItems {
+    print("_inCartItems : $_inCartItems");
+    print("_quantity : $_quantity");
+    print("_inCartItems + _quantity : ${_inCartItems + _quantity}");
+
+    return _inCartItems + _quantity;
+  }
 
   Future<void> getPopularProductList() async {
     Response response = await popularProductRepo.getPopularProductList();
@@ -52,7 +59,7 @@ class PopularProductController extends GetxController {
       _isLoaded = true;
 
       update();
-      print("4. _popularProductList : ${_popularProductList} ===");
+      //print("4. _popularProductList : ${_popularProductList} ===");
     } else {
       print('Can not connect api');
     }
@@ -64,11 +71,12 @@ class PopularProductController extends GetxController {
       //print("isIncrement ${_quantity + 1}");
 
       _quantity = checkQuantity(_quantity + 1);
-      print("number of items $_quantity");
+
+      print("number of items isIncrement ture $_quantity");
     } else {
       //print("no isIncrement ${_quantity - 1}");
       _quantity = checkQuantity(_quantity - 1);
-      print("number of items $_quantity");
+      print("number of items isIncrement false $_quantity");
     }
     update();
   }
@@ -85,6 +93,7 @@ class PopularProductController extends GetxController {
       );
       if (_inCartItems > 0) {
         _quantity = -_inCartItems;
+        print("_quantity in checkQuantity : $_quantity");
         return _quantity;
       }
       return 0;
@@ -96,8 +105,10 @@ class PopularProductController extends GetxController {
         colorText: Colors.white,
         duration: Duration(seconds: 1),
       );
-      return 20;
+
+      return _quantity;
     } else {
+      print("quantity : $quantity");
       return quantity;
     }
   }
@@ -121,6 +132,7 @@ class PopularProductController extends GetxController {
 
     _quantity = 0;
     _inCartItems = _cart.getQuantity(product);
+    print("_inCartItems : $_inCartItems");
 
     _cart.items.forEach((key, value) {
       print("The id is ${value.id} ,the quantity is ${value.quantity}");

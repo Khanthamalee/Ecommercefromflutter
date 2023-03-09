@@ -14,12 +14,17 @@ class RounteHelper {
   static const String cartPage = "/cart-page";
 
   static String getSplashPage() => '$splashPage';
+
   static String getInitial() => '$initial';
+
   static String getPopularGoods(int pageId, String page) =>
       '$popularGoods?pageId=$pageId&page=$page';
+
   static String getRecommededGoods(int pageId, String page) =>
       '$recommendedGoods?pageId=$pageId&page=$page';
-  static String getCartPage() => "$cartPage";
+
+  static String getCartPage(int pageId, String page) =>
+      "$cartPage?pageId=$pageId&page=$page";
 
   static List<GetPage> routes = [
     GetPage(name: splashPage, page: () => const SplashScreen()),
@@ -49,7 +54,9 @@ class RounteHelper {
     GetPage(
         name: cartPage,
         page: () {
-          return const CartPage();
+          var pageId = Get.parameters['pageId'];
+          var page = Get.parameters['page'];
+          return CartPage(pageId: int.parse(pageId!), page: page!);
         },
         transition: Transition.fadeIn),
   ];

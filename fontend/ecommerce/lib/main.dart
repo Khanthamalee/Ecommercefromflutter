@@ -22,14 +22,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Get.find<PopularProductController>().getPopularProductList();
-    Get.find<RecommendedProductController>().getRecommendedProductList();
-    // ignore: prefer_const_constructors
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Home-Pages',
-      initialRoute: RounteHelper.getSplashPage(),
-      getPages: RounteHelper.routes,
-    );
+    return GetBuilder<PopularProductController>(builder: (_) {
+      return GetBuilder<RecommendedProductController>(builder: (_) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Home-Pages',
+          initialRoute: RounteHelper.getSplashPage(),
+          getPages: RounteHelper.routes,
+        );
+      });
+    });
   }
 }

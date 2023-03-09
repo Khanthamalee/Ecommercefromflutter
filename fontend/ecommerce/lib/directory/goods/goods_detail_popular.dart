@@ -30,7 +30,7 @@ class PopularGoodsDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     var product =
         Get.find<PopularProductController>().popularProductList[pageId];
-    print("class PopularGoodsDetail  :product ${product.img}");
+    print("class PopularGoodsDetail  :product ${product.id}");
     //จำนวนเริ่มต้น = 0
     Get.find<PopularProductController>()
         .initProduct(product, Get.find<CartController>());
@@ -67,18 +67,25 @@ class PopularGoodsDetail extends StatelessWidget {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        if (page == "cartpage") {
-                          Get.toNamed(RounteHelper.getCartPage());
+                        if (page == "popularcartpage") {
+                          Get.toNamed(RounteHelper.getCartPage(
+                              product.id, "popularcartpage"));
                         } else {
                           Get.toNamed(RounteHelper.getInitial());
                         }
+                        print(product.id);
+                        print("popularcartpage");
                       },
                       child: const AppIcon(icon: Icons.arrow_back_ios)),
                   GetBuilder<PopularProductController>(builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        if (controller.totalItems >= 1)
-                          Get.toNamed(RounteHelper.getCartPage());
+                        if (controller.totalItems >= 1) {
+                          Get.toNamed(RounteHelper.getCartPage(
+                              product.id, "popularcartpage"));
+                        }
+                        print(product.id);
+                        print("popularcartpage");
                       },
                       child: Stack(
                         children: [

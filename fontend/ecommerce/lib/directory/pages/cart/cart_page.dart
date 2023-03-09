@@ -13,7 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({Key? key}) : super(key: key);
+  final int pageId;
+  final String page;
+  const CartPage({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +30,34 @@ class CartPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppIcon(
-                      icon: Icons.arrow_back_ios,
-                      iconColor: Colors.white,
-                      backgroundColor: AppColors.mainColor,
-                      iconsize: DimensionStaticHeight(context, 24),
-                    ),
+                    GetBuilder<CartController>(builder: (CartController) {
+                      var _CartList = CartController.getItems;
+                      return GestureDetector(
+                        onTap: () {
+                          //var id = pageId;
+                          if (pageId == pageId &&
+                              page == "reccommendedcartpage") {
+                            var popularIndex =
+                                Get.find<PopularProductController>()
+                                    .popularProductList
+                                    .indexOf(_CartList[pageId].product);
+                            Get.toNamed(RounteHelper.getRecommededGoods(
+                                pageId - 1, "reccommendedcartpage"));
+                          } else {
+                            Get.toNamed(RounteHelper.getPopularGoods(
+                                pageId - 10, "popularcartpage"));
+                          }
+                          print("pageId : $pageId");
+                          print("page : $page");
+                        },
+                        child: AppIcon(
+                          icon: Icons.arrow_back_ios,
+                          iconColor: Colors.white,
+                          backgroundColor: AppColors.mainColor,
+                          iconsize: DimensionStaticHeight(context, 24),
+                        ),
+                      );
+                    }),
                     DimensionwidthWidget(context, 20 * 5),
                     GestureDetector(
                       onTap: () {
@@ -72,7 +97,7 @@ class CartPage extends StatelessWidget {
 
                       return ListView.builder(
                         itemCount: _CartList.length,
-                        itemBuilder: (_, index) {
+                        itemBuilder: (_, pageId) {
                           return Row(
                             children: [
                               GestureDetector(
@@ -81,26 +106,27 @@ class CartPage extends StatelessWidget {
                                       Get.find<PopularProductController>()
                                           .popularProductList
                                           .indexOf(_CartList[index].product);*/
-
+                                  print(pageId);
                                   if (Get.find<PopularProductController>()
                                       .popularProductList
-                                      .contains(_CartList[index].product)) {
+                                      .contains(_CartList[pageId].product)) {
                                     var popularIndex =
                                         Get.find<PopularProductController>()
                                             .popularProductList
-                                            .indexOf(_CartList[index].product);
+                                            .indexOf(_CartList[pageId].product);
                                     //print("popularIndex : ${popularIndex}");
                                     Get.toNamed(RounteHelper.getPopularGoods(
-                                        popularIndex, "cartpage"));
+                                        popularIndex, "popularcartpage"));
                                   } else {
                                     var recommendedIndex =
                                         Get.find<RecommendedProductController>()
                                             .recommendedProductList
-                                            .indexOf(_CartList[index].product);
+                                            .indexOf(_CartList[pageId].product);
                                     /*print(
                                         "recommendedIndex : ${recommendedIndex}");*/
                                     Get.toNamed(RounteHelper.getRecommededGoods(
-                                        recommendedIndex, "cartpage"));
+                                        recommendedIndex,
+                                        "reccommendedcartpage"));
                                   }
                                 },
                                 child: Container(
@@ -113,8 +139,8 @@ class CartPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image:
-                                            NetworkImage(_CartList[index].img!),
+                                        image: NetworkImage(
+                                            _CartList[pageId].img!),
                                         /*image: NetworkImage(
                                           AppConstants.BASE_URL +
                                               AppConstants.UPLOAD_URL +
@@ -137,7 +163,7 @@ class CartPage extends StatelessWidget {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         BigText(
-                                          text: "${_CartList[index].name!}",
+                                          text: "${_CartList[pageId].name!}",
                                           color: Colors.black45,
                                         ),
                                         SmallText(text: "Spicy"),
@@ -147,7 +173,7 @@ class CartPage extends StatelessWidget {
                                           children: [
                                             BigText(
                                               text:
-                                                  "฿ ${_CartList[index].price! * _CartList[index].quantity!}",
+                                                  "฿ ${_CartList[pageId].price! * _CartList[pageId].quantity!}",
                                               color: Colors.redAccent,
                                             ),
                                             Container(
@@ -174,7 +200,7 @@ class CartPage extends StatelessWidget {
                                                   GestureDetector(
                                                     onTap: () {
                                                       CartController.addItems(
-                                                          _CartList[index]
+                                                          _CartList[pageId]
                                                               .product!,
                                                           -1);
                                                     },
@@ -188,13 +214,13 @@ class CartPage extends StatelessWidget {
                                                       context, 10),
                                                   BigText(
                                                       text:
-                                                          "${_CartList[index].quantity!}"),
+                                                          "${_CartList[pageId].quantity!}"),
                                                   DimensionwidthWidget(
                                                       context, 10),
                                                   GestureDetector(
                                                       onTap: () {
                                                         CartController.addItems(
-                                                            _CartList[index]
+                                                            _CartList[pageId]
                                                                 .product!,
                                                             1);
                                                       },

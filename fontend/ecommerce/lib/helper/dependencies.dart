@@ -7,8 +7,11 @@ import 'package:ecommerce/data/repository/popular_product_repo.dart';
 import 'package:ecommerce/data/repository/recommended_product_repo.dart';
 import 'package:ecommerce/util/app_constants.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> init() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  Get.lazyPut(() => sharedPreferences);
   //api client
   //http://mvs.bslmeiyu.com/api/v1/products/popular
   //http://mvs.bslmeiyu.com/api/v1/products/recommended
@@ -18,7 +21,7 @@ Future<void> init() async {
   Get.lazyPut(() => PopularProductRepo(apiClient: Get.find()));
 
   Get.lazyPut(() => RecommendedProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => CartRepo());
+  Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
 
   //controller
   Get.lazyPut(() => PopularProductController(popularProductRepo: Get.find()));
