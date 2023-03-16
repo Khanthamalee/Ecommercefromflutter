@@ -23,9 +23,9 @@ class BigText extends StatelessWidget {
     return Text(text,
         maxLines: 1,
         overflow: overflow,
-        style: GoogleFonts.roboto(
+        style: GoogleFonts.mali(
             color: color,
             fontWeight: FontWeight.bold,
-            fontSize: size == 0 ? DimensionStaticHeight(context, 20) : size));
+            fontSize: size == 0 ? DimensionStaticHeight(context, 18) : size));
   }
 }

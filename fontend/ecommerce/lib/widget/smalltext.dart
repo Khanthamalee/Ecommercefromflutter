@@ -21,7 +21,7 @@ class SmallText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text,
-        style: GoogleFonts.roboto(
+        style: GoogleFonts.mali(
             color: color,
             fontWeight: FontWeight.bold,
             fontSize: size == 0 ? DimensionStaticHeight(context, 12) : size,

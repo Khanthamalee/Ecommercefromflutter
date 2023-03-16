@@ -33,7 +33,7 @@ class CartController extends GetxController {
             Get.snackbar(
               "สินค้าไม่สามารถ",
               "เพิ่มจำนวนมากกว่า 20 ชิ้นค่ะ",
-              backgroundColor: AppColors.mainColor,
+              backgroundColor: Colors.redAccent,
               colorText: Colors.white,
               duration: Duration(seconds: 1),
             );
@@ -71,19 +71,18 @@ class CartController extends GetxController {
           product: product,
         );
       });
-    } /*else {
-        Get.snackbar(
-          "สินค้าไม่สามารถ",
-          "เพิ่มจำนวนมากกว่า 20 ชิ้นค่ะ",
-          backgroundColor: AppColors.mainColor,
-          colorText: Colors.white,
-          duration: Duration(seconds: 1),
-        );
-      }
-    }*/
+    } else {
+      Get.snackbar(
+        "สินค้าไม่สามารถ",
+        "เพิ่มจำนวนมากกว่า 20 ชิ้นค่ะ",
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+        duration: Duration(seconds: 1),
+      );
+    }
+
     //print("getItems : $getItems");
     cartRepo.addToCartList(getItems);
-
     update();
   }
 
@@ -100,12 +99,12 @@ class CartController extends GetxController {
       _items.forEach((key, value) {
         if (key == product.id) {
           quantity = value.quantity!;
-          print(
-              " value.quantity in getQuantity at car_controller : ${value.quantity}");
+          /*print(
+              " value.quantity in getQuantity at car_controller : ${value.quantity}");*/
         }
       });
     }
-    print(" quantity in getQuantity at car_controller : ${quantity}");
+    //print(" quantity in getQuantity at car_controller : ${quantity}");
 
     return quantity;
   }
@@ -120,7 +119,7 @@ class CartController extends GetxController {
 
   List<CartModel> get getItems {
     return _items.entries.map((e) {
-      print("e.value : ${e.value}");
+      //print("e.value : ${e.value}");
       return e.value;
     }).toList();
   }
@@ -153,6 +152,20 @@ class CartController extends GetxController {
 
   void clear() {
     _items = {};
+    update();
+  }
+
+  List<CartModel> getCartHistoryList() {
+    return cartRepo.getCartHistoryList();
+  }
+
+  set setItems(Map<int, CartModel> setItems) {
+    _items = {};
+    _items = setItems;
+  }
+
+  void addToCartList() {
+    cartRepo.addToCartList(getItems);
     update();
   }
 }

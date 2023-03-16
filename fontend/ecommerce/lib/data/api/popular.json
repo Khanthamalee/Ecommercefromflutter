@@ -7,7 +7,7 @@
             "id": 10,
             "name": "Sunflower",
             "description": "The common sunflower (Helianthus annuus) is a large annual forb of the genus Helianthus. It is commonly grown as a crop for its edible oily seeds. Apart from cooking oil production, it is also used as livestock forage (as a meal or a silage plant), as bird food, in some industrial applications, and as an ornamental in domestic gardens. Wild H. annuus is a widely branched annual plant with many flower heads. The domestic sunflower, however, often possesses only a single large inflorescence (flower head) atop an unbranched stem.",
-            "price": 34,
+            "price": 100,
             "stars": 3,
             "img": "https://raw.githubusercontent.com/Khanthamalee/Ecommercefromflutter/main/fontend/ecommerce/assets/image_ui/sunflower.png",
             "location": "Moraine Lake, Alberta",
@@ -19,7 +19,7 @@
             "id": 11,
             "name": "Peacelily",
             "description": "They are evergreen herbaceous perennial plants with large leaves 12–65 cm long and 3–25 cm broad. The flowers are produced in a spadix, surrounded by a 10–30 cm long, white, yellowish, or greenish spathe. The plant does not need large amounts of light or water to survive. They are most often grown as houseplants, however they are able to withstand the elements well enough to thrive when planted outdoors in situations that are hot and humid. ",
-            "price": 33,
+            "price": 500,
             "stars": 4,
             "img": "https://raw.githubusercontent.com/Khanthamalee/Ecommercefromflutter/main/fontend/ecommerce/assets/image_ui/piecelily.png",
             "location": "Killarney Provincial Park",
@@ -31,7 +31,7 @@
             "id": 13,
             "name": "Water fern",
             "description": "Water fern is a small free-floating water plant that forms dense mats. It was introduced for ornamental use in ponds and aquaria but its introduction into the wild has meant it has spread rapidly throughout England in the last 50 years. ",
-            "price": 10,
+            "price": 100,
             "stars": 5,
             "img": "https://raw.githubusercontent.com/Khanthamalee/Ecommercefromflutter/main/fontend/ecommerce/assets/image_ui/green.png",
             "location": "China",
@@ -43,25 +43,13 @@
             "id": 14,
             "name": "Catharanthus roseus",
             "description": "Catharanthus roseus is an evergreen subshrub or herbaceous plant growing 1 m (39 in) tall. The leaves are oval to oblong, 2.5–9 cm (1.0–3.5 in) long and 1–3.5 cm (0.4–1.4 in) wide, glossy green, hairless, with a pale midrib and a short petiole 1–1.8 cm (0.4–0.7 in) long; they are arranged in opposite pairs. The flowers range from white with a yellow or red center to dark pink with a darker red center, with a basal tube 2.5–3 cm (1.0–1.2 in) long and a corolla 2–5 cm (0.8–2.0 in) diameter with five petal-like lobes. The fruit is a pair of follicles 2–4 cm (0.8–1.6 in) long and 3 mm (0.1 in) wide.",
-            "price": 5,
+            "price": 100,
             "stars": 4,
             "img": "https://raw.githubusercontent.com/Khanthamalee/API_basic/main/asset/watercress.png",
             "location": "china",
             "created_at": "2021-12-26 01:36:29",
             "updated_at": "2022-01-01 08:57:01",
             "type_id": 2
-        },
-        {
-            "id": 15,
-           "name": "Catharanthus roseus",
-            "description": "Catharanthus roseus is an evergreen subshrub or herbaceous plant growing 1 m (39 in) tall. The leaves are oval to oblong, 2.5–9 cm (1.0–3.5 in) long and 1–3.5 cm (0.4–1.4 in) wide, glossy green, hairless, with a pale midrib and a short petiole 1–1.8 cm (0.4–0.7 in) long; they are arranged in opposite pairs. The flowers range from white with a yellow or red center to dark pink with a darker red center, with a basal tube 2.5–3 cm (1.0–1.2 in) long and a corolla 2–5 cm (0.8–2.0 in) diameter with five petal-like lobes. The fruit is a pair of follicles 2–4 cm (0.8–1.6 in) long and 3 mm (0.1 in) wide.",
-            "price": 5,
-            "stars": 4,
-            "img": "https://raw.githubusercontent.com/Khanthamalee/API_basic/main/asset/watercress.png",
-            "location": "BD",
-            "created_at": "2021-12-27 06:27:38",
-            "updated_at": "2022-01-01 08:57:16",
-            "type_id": 2
-        }
+        }        
     ]
 }

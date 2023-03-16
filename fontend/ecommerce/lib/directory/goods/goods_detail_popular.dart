@@ -67,29 +67,29 @@ class PopularGoodsDetail extends StatelessWidget {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        if (page == "popularcartpage") {
-                          Get.toNamed(RounteHelper.getCartPage(
-                              product.id, "popularcartpage"));
+                        if (page == "cartpage") {
+                          Get.toNamed(RounteHelper.getCartPage("cartpage"));
                         } else {
                           Get.toNamed(RounteHelper.getInitial());
                         }
-                        print(product.id);
-                        print("popularcartpage");
                       },
-                      child: const AppIcon(icon: Icons.arrow_back_ios)),
+                      child: AppIcon(
+                        icon: Icons.arrow_back_ios,
+                        size: DimensionStaticHeight(context, 55),
+                      )),
                   GetBuilder<PopularProductController>(builder: (controller) {
                     return GestureDetector(
                       onTap: () {
                         if (controller.totalItems >= 1) {
-                          Get.toNamed(RounteHelper.getCartPage(
-                              product.id, "popularcartpage"));
+                          Get.toNamed(RounteHelper.getCartPage("cartpage"));
                         }
-                        print(product.id);
-                        print("popularcartpage");
                       },
                       child: Stack(
                         children: [
-                          const AppIcon(icon: Icons.shopping_cart_outlined),
+                          AppIcon(
+                            icon: Icons.shopping_cart_outlined,
+                            size: DimensionStaticHeight(context, 55),
+                          ),
                           controller.totalItems >= 1
                               ? Positioned(
                                   right: 0,
@@ -97,7 +97,7 @@ class PopularGoodsDetail extends StatelessWidget {
                                   child: GestureDetector(
                                     child: AppIcon(
                                       icon: Icons.circle,
-                                      size: 20,
+                                      size: 30,
                                       iconColor: Colors.transparent,
                                       backgroundColor: AppColors.mainColor,
                                     ),
@@ -108,7 +108,7 @@ class PopularGoodsDetail extends StatelessWidget {
                                   controller.totalItems <= 9
                               ? Positioned(
                                   top: DimensionStaticHeight(context, 4),
-                                  right: DimensionStaticWidth(context, 7),
+                                  right: DimensionStaticWidth(context, 10),
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: BigText(
@@ -123,7 +123,7 @@ class PopularGoodsDetail extends StatelessWidget {
                               : controller.totalItems > 9
                                   ? Positioned(
                                       top: DimensionStaticHeight(context, 4),
-                                      right: DimensionStaticWidth(context, 4),
+                                      right: DimensionStaticWidth(context, 6),
                                       child: Align(
                                         alignment: Alignment.bottomCenter,
                                         child: BigText(
@@ -221,16 +221,24 @@ class PopularGoodsDetail extends StatelessWidget {
                       child: Icon(
                         Icons.remove,
                         color: AppColors.signColor,
+                        size: DimensionStaticHeight(context, 18),
                       ),
                     ),
                     DimensionwidthWidget(context, 10),
-                    BigText(text: popularProducts.inCartItems.toString()),
+                    BigText(
+                      text: popularProducts.inCartItems.toString(),
+                      size: DimensionStaticHeight(context, 18),
+                    ),
                     DimensionwidthWidget(context, 10),
                     GestureDetector(
                         onTap: () {
                           popularProducts.setQuantity(true);
                         },
-                        child: Icon(Icons.add, color: AppColors.signColor))
+                        child: Icon(
+                          Icons.add,
+                          color: AppColors.signColor,
+                          size: DimensionStaticHeight(context, 18),
+                        ))
                   ],
                 ),
               ),
@@ -251,6 +259,7 @@ class PopularGoodsDetail extends StatelessWidget {
                   child: BigText(
                     text: "฿${product.price} | เพิ่มในตระกร้า",
                     color: Colors.white,
+                    size: DimensionStaticHeight(context, 18),
                   ),
 
                   decoration: BoxDecoration(

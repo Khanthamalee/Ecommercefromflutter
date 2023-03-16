@@ -46,7 +46,7 @@ class _MainGoodPageState extends State<MainGoodPage> {
                     Row(
                       children: [
                         SmallText(
-                          text: "Chaiyaphum",
+                          text: "   Chaiyaphum",
                           color: Colors.black,
                         ),
                         const Icon(Icons.arrow_drop_down_rounded)

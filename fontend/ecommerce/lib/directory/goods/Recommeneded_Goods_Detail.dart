@@ -47,34 +47,35 @@ class RecommenededGoodsDetail extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             GestureDetector(
                 onTap: () {
-                  if (page == "reccommendedcartpage") {
-                    Get.toNamed(RounteHelper.getCartPage(
-                        product.id, "reccommendedcartpage"));
+                  if (page == "cartpage") {
+                    Get.toNamed(RounteHelper.getCartPage("cartpage"));
                   } else {
                     Get.toNamed(RounteHelper.getInitial());
                   }
                 },
-                child: const AppIcon(icon: Icons.clear)),
+                child: AppIcon(
+                  icon: Icons.clear,
+                  size: DimensionStaticHeight(context, 55),
+                )),
             //const AppIcon(icon: Icons.shopping_cart_outlined)
             GetBuilder<PopularProductController>(builder: (controller) {
               return GestureDetector(
                 onTap: () {
                   if (controller.totalItems >= 1)
-                    Get.toNamed(RounteHelper.getCartPage(
-                        product.id, "reccommendedcartpage"));
-                  print(product.id);
-                  print("reccommendedcartpage");
+                    Get.toNamed(RounteHelper.getCartPage("cartpage"));
                 },
                 child: Stack(
                   children: [
-                    const AppIcon(icon: Icons.shopping_cart_outlined),
+                    AppIcon(
+                        icon: Icons.shopping_cart_outlined,
+                        size: DimensionStaticHeight(context, 55)),
                     Get.find<PopularProductController>().totalItems >= 1
                         ? Positioned(
                             right: 0,
                             top: 0,
                             child: AppIcon(
                               icon: Icons.circle,
-                              size: 20,
+                              size: 30,
                               iconColor: Colors.transparent,
                               backgroundColor: AppColors.mainColor,
                             ),
@@ -84,7 +85,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                             Get.find<PopularProductController>().totalItems <= 9
                         ? Positioned(
                             top: DimensionStaticHeight(context, 4),
-                            right: DimensionStaticWidth(context, 7),
+                            right: DimensionStaticWidth(context, 10),
                             child: Align(
                               alignment: Alignment.bottomCenter,
                               child: BigText(
@@ -99,7 +100,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                         : Get.find<PopularProductController>().totalItems > 9
                             ? Positioned(
                                 top: DimensionStaticHeight(context, 4),
-                                right: DimensionStaticWidth(context, 4),
+                                right: DimensionStaticWidth(context, 6),
                                 child: Align(
                                   alignment: Alignment.bottomCenter,
                                   child: BigText(
@@ -118,13 +119,16 @@ class RecommenededGoodsDetail extends StatelessWidget {
             })
           ]),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(DimensionStaticHeight(context, 40)),
+            preferredSize: Size.fromHeight(DimensionStaticHeight(context, 55)),
             child: Container(
               // ignore: sort_child_properties_last
               child: Center(
-                child: BigText(
-                  text: product.name,
-                  size: DimensionStaticHeight(context, 26),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: BigText(
+                    text: product.name,
+                    size: DimensionStaticHeight(context, 20),
+                  ),
                 ),
               ),
               width: double.maxFinite,
@@ -160,7 +164,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                   Container(
                     child: SmallText(
                       text: product.description,
-                      size: DimensionStaticHeight(context, 18),
+                      size: DimensionStaticHeight(context, 16),
                     ),
                     //child: DetailUnderImage(text: product.description,),
                   ),
@@ -197,7 +201,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                   BigText(
                     text: "฿${product.price}  X ${controller.inCartItems}",
                     color: AppColors.mainBlackColor,
-                    size: DimensionStaticHeight(context, 22),
+                    size: DimensionStaticHeight(context, 20),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -271,6 +275,7 @@ class RecommenededGoodsDetail extends StatelessWidget {
                       child: BigText(
                         text: "\฿${product.price} ! เพิ่มในตระกร้า",
                         color: Colors.white,
+                        size: DimensionStaticHeight(context, 18),
                       ),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(

@@ -37,9 +37,9 @@ class PopularProductController extends GetxController {
   //getter return int เอาไปใช้งาน
 
   int get inCartItems {
-    print("_inCartItems : $_inCartItems");
-    print("_quantity : $_quantity");
-    print("_inCartItems + _quantity : ${_inCartItems + _quantity}");
+    //print("_inCartItems : $_inCartItems");
+    //print("_quantity : $_quantity");
+    //print("_inCartItems + _quantity : ${_inCartItems + _quantity}");
 
     return _inCartItems + _quantity;
   }
@@ -72,11 +72,11 @@ class PopularProductController extends GetxController {
 
       _quantity = checkQuantity(_quantity + 1);
 
-      print("number of items isIncrement ture $_quantity");
+      //print("number of items isIncrement ture $_quantity");
     } else {
       //print("no isIncrement ${_quantity - 1}");
       _quantity = checkQuantity(_quantity - 1);
-      print("number of items isIncrement false $_quantity");
+      //print("number of items isIncrement false $_quantity");
     }
     update();
   }
@@ -87,13 +87,13 @@ class PopularProductController extends GetxController {
       Get.snackbar(
         "สินค้า",
         "ไม่สามารถลดจำนวนได้มากกว่านี้ค่ะ",
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: Colors.redAccent,
         colorText: Colors.white,
         duration: Duration(seconds: 1),
       );
       if (_inCartItems > 0) {
         _quantity = -_inCartItems;
-        print("_quantity in checkQuantity : $_quantity");
+        //print("_quantity in checkQuantity : $_quantity");
         return _quantity;
       }
       return 0;
@@ -101,14 +101,14 @@ class PopularProductController extends GetxController {
       Get.snackbar(
         "สินค้า",
         "ไม่สามารถเพิ่มจำนวนได้มากกว่า 20 ชิ้นค่ะ",
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: Colors.redAccent,
         colorText: Colors.white,
         duration: Duration(seconds: 1),
       );
 
       return _quantity;
     } else {
-      print("quantity : $quantity");
+      //print("quantity : $quantity");
       return quantity;
     }
   }
@@ -124,7 +124,7 @@ class PopularProductController extends GetxController {
     if (exist) {
       _inCartItems = _cart.getQuantity(product);
     }
-    print("the quantity in th cart is ${_inCartItems}");
+    //print("the quantity in th cart is ${_inCartItems}");
   }
 
   void addItem(ProductModel product) {
@@ -132,10 +132,10 @@ class PopularProductController extends GetxController {
 
     _quantity = 0;
     _inCartItems = _cart.getQuantity(product);
-    print("_inCartItems : $_inCartItems");
+    //print("_inCartItems : $_inCartItems");
 
     _cart.items.forEach((key, value) {
-      print("The id is ${value.id} ,the quantity is ${value.quantity}");
+      //print("The id is ${value.id} ,the quantity is ${value.quantity}");
     });
 
     update();

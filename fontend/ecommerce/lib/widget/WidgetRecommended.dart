@@ -82,7 +82,7 @@ class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
                     color: Colors.white),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      left: DimensionStaticWidth(context, 15),
+                      left: DimensionStaticWidth(context, 10),
                       right: DimensionStaticWidth(context, 10)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

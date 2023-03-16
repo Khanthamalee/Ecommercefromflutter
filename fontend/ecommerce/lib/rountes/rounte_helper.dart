@@ -23,8 +23,7 @@ class RounteHelper {
   static String getRecommededGoods(int pageId, String page) =>
       '$recommendedGoods?pageId=$pageId&page=$page';
 
-  static String getCartPage(int pageId, String page) =>
-      "$cartPage?pageId=$pageId&page=$page";
+  static String getCartPage(String page) => "$cartPage?page=$page";
 
   static List<GetPage> routes = [
     GetPage(name: splashPage, page: () => const SplashScreen()),
@@ -54,9 +53,8 @@ class RounteHelper {
     GetPage(
         name: cartPage,
         page: () {
-          var pageId = Get.parameters['pageId'];
           var page = Get.parameters['page'];
-          return CartPage(pageId: int.parse(pageId!), page: page!);
+          return CartPage(page: page!);
         },
         transition: Transition.fadeIn),
   ];

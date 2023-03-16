@@ -1,10 +1,10 @@
 //import 'dart:html';
+import 'package:ecommerce/directory/pages/cart/cart_history.dart';
 import 'package:ecommerce/directory/pages/main_goods_page.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     return [
       const MainGoodPage(),
       Container(child: const Center(child: Text("Next page"))),
-      Container(child: const Center(child: Text("Next next page"))),
+      const CartHistory(),
       Container(child: const Center(child: Text("Next next next page"))),
     ];
   }
@@ -50,24 +50,28 @@ class _HomePageState extends State<HomePage> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
         title: ("หน้าหลัก"),
+        textStyle: GoogleFonts.mali(fontWeight: FontWeight.bold),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.archivebox_fill),
-        title: ("ประวัติ"),
+        title: "ประวัติ",
+        textStyle: GoogleFonts.mali(fontWeight: FontWeight.bold),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.cart_fill),
-        title: ("ตระกร้า"),
+        title: ("รายการ"),
+        textStyle: GoogleFonts.mali(fontWeight: FontWeight.bold),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person),
         title: ("ฉัน"),
+        textStyle: GoogleFonts.mali(fontWeight: FontWeight.bold),
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: Colors.amber,
       ),
