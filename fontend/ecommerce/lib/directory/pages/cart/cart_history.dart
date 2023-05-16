@@ -13,7 +13,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CartHistory extends StatelessWidget {
-  const CartHistory({super.key});
+  final String token;
+  const CartHistory({Key? key, required this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,21 @@ class CartHistory extends StatelessWidget {
     print("cartItemsPerOrder : $cartItemsPerOrder");
 
     var ListCounter = 0;
+    print("token in CartHistory: ${token}");
+    Widget timeWidget(int index) {
+      var outputDate = DateTime.now().toString();
+      if (index < getCartHistoryList.length) {
+        DateTime parseDate = DateFormat("yyyy-MM-dd HH:mm:ss")
+            .parse(getCartHistoryList[ListCounter].time!);
+        var inputDate = DateTime.parse(parseDate.toString());
+
+        var outputFormat = DateFormat("MM/dd/yyyy เวลา HH:mm:ss");
+        var outputDate = outputFormat.format(inputDate);
+        print(outputDate);
+        return BigText(text: outputDate);
+      }
+      return BigText(text: outputDate);
+    }
 
     return Scaffold(
         body: Column(
@@ -88,20 +104,7 @@ class CartHistory extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    (() {
-                                      DateTime parseDate = DateFormat(
-                                              "yyyy-MM-dd HH:mm:ss")
-                                          .parse(getCartHistoryList[ListCounter]
-                                              .time!);
-                                      var inputDate =
-                                          DateTime.parse(parseDate.toString());
-
-                                      var outputFormat = DateFormat(
-                                          "MM/dd/yyyy เวลา HH:mm:ss");
-                                      var outputDate =
-                                          outputFormat.format(inputDate);
-                                      return BigText(text: outputDate);
-                                    }()),
+                                    timeWidget(ListCounter),
                                     DimensionheightWidget(context, 10),
                                     Row(
                                       mainAxisAlignment:
@@ -197,7 +200,9 @@ class CartHistory extends StatelessWidget {
 
                                                   Get.toNamed(
                                                       RounteHelper.getCartPage(
-                                                          "cart-history"));
+                                                          1,
+                                                          "cart-history",
+                                                          token));
                                                 },
                                                 child: Container(
                                                   padding: EdgeInsets.symmetric(

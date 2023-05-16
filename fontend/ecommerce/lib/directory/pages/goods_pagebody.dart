@@ -17,7 +17,8 @@ import '../../util/dimensionWidget.dart';
 import '../../widget/icon_text_widget.dart';
 
 class GoodsPageBody extends StatefulWidget {
-  const GoodsPageBody({super.key});
+  final String token;
+  const GoodsPageBody({Key? key, required this.token}) : super(key: key);
 
   @override
   State<GoodsPageBody> createState() => _GoodsPageBodyState();
@@ -31,6 +32,8 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
 
   late int index;
 
+  late String _token;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +44,8 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
         //print("Current value is " + _currPageValue.toString());
       });
     });
+    _token = widget.token;
+    print("token in GoodsPageBody : $_token");
   }
 
   @override
@@ -118,7 +123,9 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
               ],
             ),
           ),
-          const MyWidgetReccommended(),
+          MyWidgetReccommended(
+            token: _token,
+          ),
           //DimensionheightWidget(context, 5),
           //List of goods and index
           /*const SizedBox(
@@ -166,7 +173,7 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
         children: [
           GestureDetector(
             onTap: () {
-              Get.toNamed(RounteHelper.getPopularGoods(index, "home"));
+              Get.toNamed(RounteHelper.getPopularGoods(index, "home", _token));
             },
             child: Container(
               height: DimensionStaticHeight(context, 220),

@@ -8,6 +8,7 @@ import '../../util/dimensionWidget.dart';
 class BigText extends StatelessWidget {
   final Color? color;
   final String text;
+  final int maxlines;
   double size;
   TextOverflow overflow;
   BigText(
@@ -15,13 +16,14 @@ class BigText extends StatelessWidget {
       this.color = const Color(0xFF332d2b),
       required this.text,
       this.size = 0,
-      this.overflow = TextOverflow.ellipsis})
+      this.overflow = TextOverflow.ellipsis,
+      this.maxlines = 0})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(text,
-        maxLines: 1,
+        maxLines: maxlines == 0 ? 1 : maxlines,
         overflow: overflow,
         style: GoogleFonts.mali(
             color: color,

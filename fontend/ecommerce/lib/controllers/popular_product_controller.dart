@@ -9,79 +9,57 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PopularProductController extends GetxController {
-  //ตัวแปรชนิดคงที่ constant
   final PopularProductRepo popularProductRepo;
 
-  //default construntor
   PopularProductController({required this.popularProductRepo});
 
   List<dynamic> _popularProductList = [];
-  //getter method return list เอาไปใช้งาน
+
   List<dynamic> get popularProductList => _popularProductList;
 
   late CartController _cart;
 
   bool _isLoaded = false;
-  //getter return bool เอาไปใช้งาน
+
   bool get isLoaded => _isLoaded;
 
   int _quantity = 0;
-  //getter return int เอาไปใช้งาน
+
   int get quantity => _quantity;
 
-  //จำนวนในรถเข็นเท่ากับที่มีอยู่ในรถเข็นอยู่แล้ว+จำนวนที่เพิ่มไปใหม่
-  //เช่น มีในรถเข็น _inCartItems =  3
-  //เพิ่มไปใหม่ _quantity = 4
-  //จำนวนในรถเข็นล่าสุด inCartItems = 7
   int _inCartItems = 0;
-  //getter return int เอาไปใช้งาน
 
   int get inCartItems {
-    //print("_inCartItems : $_inCartItems");
-    //print("_quantity : $_quantity");
-    //print("_inCartItems + _quantity : ${_inCartItems + _quantity}");
-
     return _inCartItems + _quantity;
   }
 
   Future<void> getPopularProductList() async {
     Response response = await popularProductRepo.getPopularProductList();
-    //print("response.body out if: ${response.body}");
+    print("response.body: ${response.body}");
     if (response.statusCode == 200) {
-      /* ในกรณีที่ response.body เป็น map อยู่แล้วใช้แบบนี้ได้
+      // ในกรณีที่ response.body เป็น map อยู่แล้วใช้แบบนี้ได้
       _popularProductList = [];
-      _popularProductList
-          .addAll(Goods.fromJson(response.body).product);*/
+      _popularProductList.addAll(Goods.fromJson(response.body).product);
 
-      _popularProductList = Goods.fromJson(jsonDecode(response.body)).product;
+      /* _popularProductList = Goods.fromJson(jsonDecode(response.body)).product;*/
 
-      //แต่ก่อน _isLoaded = false; แต่ถ้าทำ _popularProductList = Goods.fromJson(jsonDecode(response.body)).product; ให้เป็น true
       _isLoaded = true;
 
       update();
-      //print("4. _popularProductList : ${_popularProductList} ===");
     } else {
       print('Can not connect api');
     }
   }
 
-  //ถ้า input เป็น true ให้เพิ่ม +1 แต่ false ให้ลด -1
   void setQuantity(bool isIncrement) {
     if (isIncrement) {
-      //print("isIncrement ${_quantity + 1}");
-
       _quantity = checkQuantity(_quantity + 1);
-
-      //print("number of items isIncrement ture $_quantity");
     } else {
-      //print("no isIncrement ${_quantity - 1}");
       _quantity = checkQuantity(_quantity - 1);
-      //print("number of items isIncrement false $_quantity");
     }
     update();
   }
 
-  //ไม่ให้มีค่าติดลบ และสินค้าไม่เกิน 20 ชิ้น
   int checkQuantity(int quantity) {
     if ((_inCartItems + quantity) < 0) {
       Get.snackbar(
@@ -93,7 +71,7 @@ class PopularProductController extends GetxController {
       );
       if (_inCartItems > 0) {
         _quantity = -_inCartItems;
-        //print("_quantity in checkQuantity : $_quantity");
+
         return _quantity;
       }
       return 0;
@@ -108,12 +86,10 @@ class PopularProductController extends GetxController {
 
       return _quantity;
     } else {
-      //print("quantity : $quantity");
       return quantity;
     }
   }
 
-  //ค่าเริ่มต้นจำนวน = 0
   void initProduct(ProductModel product, CartController cart) {
     _quantity = 0;
     _inCartItems = 0;
@@ -124,7 +100,6 @@ class PopularProductController extends GetxController {
     if (exist) {
       _inCartItems = _cart.getQuantity(product);
     }
-    //print("the quantity in th cart is ${_inCartItems}");
   }
 
   void addItem(ProductModel product) {
@@ -132,11 +107,8 @@ class PopularProductController extends GetxController {
 
     _quantity = 0;
     _inCartItems = _cart.getQuantity(product);
-    //print("_inCartItems : $_inCartItems");
 
-    _cart.items.forEach((key, value) {
-      //print("The id is ${value.id} ,the quantity is ${value.quantity}");
-    });
+    _cart.items.forEach((key, value) {});
 
     update();
   }

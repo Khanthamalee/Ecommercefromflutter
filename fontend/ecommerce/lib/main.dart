@@ -1,6 +1,10 @@
 import 'package:ecommerce/controllers/car_controller.dart';
 import 'package:ecommerce/controllers/popular_product_controller.dart';
 import 'package:ecommerce/controllers/recommended_product_controller.dart';
+import 'package:ecommerce/directory/pages/resetpassword/resetpassword_page.dart';
+import 'package:ecommerce/directory/pages/sign_in/sign_in.dart';
+import 'package:ecommerce/directory/pages/sign_up/authenticate_email.dart';
+import 'package:ecommerce/directory/pages/sign_up/sigh_up_page.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +28,12 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Home-Pages',
-          initialRoute: RounteHelper.getSplashPage(),
+          //home: ResetPasswordPage(),
+          //home: SignUpPage(),
+          //home: AuthEmail(),
+          //home: SignInPage(),
+
+          initialRoute: RounteHelper.getSignInPage(),
           getPages: RounteHelper.routes,
         );
       });

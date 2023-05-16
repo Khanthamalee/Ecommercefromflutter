@@ -1,5 +1,7 @@
 import 'package:ecommerce/base/no_data_cartpage.dart';
+import 'package:ecommerce/controllers/auth_controller.dart';
 import 'package:ecommerce/controllers/car_controller.dart';
+import 'package:ecommerce/controllers/location_controller.dart';
 import 'package:ecommerce/controllers/popular_product_controller.dart';
 import 'package:ecommerce/controllers/recommended_product_controller.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
@@ -12,11 +14,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartPage extends StatelessWidget {
+  final int pageId;
   final String page;
-  const CartPage({Key? key, required this.page}) : super(key: key);
+  final String token;
+  const CartPage(
+      {Key? key, required this.pageId, required this.page, required this.token})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("token in CartPage: ${token}");
     return Scaffold(
         body: Stack(
           children: [
@@ -32,20 +39,23 @@ class CartPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           //var id = pageId;
-                          /*if (pageId == pageId &&
+                          if (pageId == pageId &&
                               page == "reccommendedcartpage") {
                             var popularIndex =
                                 Get.find<PopularProductController>()
                                     .popularProductList
                                     .indexOf(_CartList[pageId].product);
                             Get.toNamed(RounteHelper.getRecommededGoods(
-                                pageId - 1, "reccommendedcartpage"));
-                          } else {
+                                pageId, "reccommendedcartpage", token));
+                          } else if (pageId == pageId &&
+                              page == "popularcartpage") {
                             Get.toNamed(RounteHelper.getPopularGoods(
-                                pageId - 10, "popularcartpage"));
+                                pageId, "popularcartpage", token));
+                          } else {
+                            Get.toNamed(RounteHelper.getInitial(token));
                           }
                           print("pageId : $pageId");
-                          print("page : $page");*/
+                          print("page : $page");
                         },
                         child: AppIcon(
                           icon: Icons.arrow_back_ios,
@@ -58,7 +68,7 @@ class CartPage extends StatelessWidget {
                     DimensionwidthWidget(context, 20 * 5),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed(RounteHelper.getInitial());
+                        Get.toNamed(RounteHelper.getInitial(token));
                       },
                       child: AppIcon(
                         icon: Icons.home_outlined,
@@ -93,7 +103,9 @@ class CartPage extends StatelessWidget {
                             child: GetBuilder<CartController>(
                                 builder: (CartController) {
                               var _CartList = CartController.getItems;
-                              print("_CartList.length : ${_CartList.length}");
+                              //print("_CartList.length : ${_CartList.length}");
+                              //print(
+                              //"id : ${_CartList[1].id} name : ${_CartList[1].name}  ");
 
                               return ListView.builder(
                                 itemCount: _CartList.length,
@@ -102,6 +114,7 @@ class CartPage extends StatelessWidget {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
+                                          print(index);
                                           /*var popularIndex =
                                       Get.find<PopularProductController>()
                                           .popularProductList
@@ -117,18 +130,21 @@ class CartPage extends StatelessWidget {
                                                 .popularProductList
                                                 .indexOf(
                                                     _CartList[index].product);
-                                            //print("popularIndex : ${popularIndex}");
+                                            print(
+                                                "popularIndex : ${popularIndex}");
                                             Get.toNamed(
                                                 RounteHelper.getPopularGoods(
-                                                    popularIndex, "cartpage"));
+                                                    popularIndex,
+                                                    "cartpage",
+                                                    token));
                                           } else {
                                             var recommendedIndex = Get.find<
                                                     RecommendedProductController>()
                                                 .recommendedProductList
                                                 .indexOf(
                                                     _CartList[index].product);
-                                            /*print(
-                                        "recommendedIndex : ${recommendedIndex}");*/
+                                            print(
+                                                "recommendedIndex : ${recommendedIndex}");
                                             if (recommendedIndex < 0) {
                                               Get.snackbar(
                                                 "รายการสั่งซื้อสิ้นค้า",
@@ -142,7 +158,8 @@ class CartPage extends StatelessWidget {
                                               Get.toNamed(RounteHelper
                                                   .getRecommededGoods(
                                                       recommendedIndex,
-                                                      "cartpage"));
+                                                      "cartpage",
+                                                      token));
                                             }
                                           }
                                         },
@@ -349,8 +366,16 @@ class CartPage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          //popularProducts.addItem(product);
-                          cartcontroller.addToHistory();
+                          if (Get.find<AuthController>().userLoggedIn()) {
+                            //cartcontroller.addToHistory();
+                            if (Get.find<LocationController>()
+                                .addressList
+                                .isEmpty) {
+                              Get.toNamed(RounteHelper.getAddAddressPage());
+                            }
+                          } else {
+                            () => Get.toNamed(RounteHelper.getSignInPage());
+                          }
                         },
                         child: Container(
                           margin: EdgeInsets.only(

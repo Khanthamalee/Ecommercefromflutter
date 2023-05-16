@@ -16,16 +16,14 @@ class CartController extends GetxController {
   List<CartModel> storageItems = [];
 
   void addItems(ProductModel product, int quantity) {
-    //print("length of the item is ${_items.length}");
     var totalQuantity = 0;
     int _quantity = 0;
     if (_items.containsKey(product.id!)) {
       _items.update(product.id!, (value) {
-        //totalQuantity = value.quantity! + _quantity;
         if (value.quantity! > 0 && value.quantity! <= 19) {
           totalQuantity = value.quantity! + quantity;
         } else if (value.quantity! > 19) {
-          if (quantity < 0) {
+          if (quantity <= 0) {
             totalQuantity = value.quantity! + quantity;
           } else {
             value.quantity = 20;
@@ -39,9 +37,6 @@ class CartController extends GetxController {
             );
           }
         }
-        /*print("value.quantity : ${value.quantity}");
-        print("quantity : $quantity");
-        print("totalQuantity : $totalQuantity");*/
         return CartModel(
           id: value.id,
           name: value.name,
@@ -73,15 +68,14 @@ class CartController extends GetxController {
       });
     } else {
       Get.snackbar(
-        "สินค้าไม่สามารถ",
-        "เพิ่มจำนวนมากกว่า 20 ชิ้นค่ะ",
+        "ต้องเลือกสิ้นค้ามากกว่า 1 ชิ้น",
+        "จึงสามารถสั่งซื้อสินค้าได้ค่ะ",
         backgroundColor: Colors.redAccent,
         colorText: Colors.white,
         duration: Duration(seconds: 1),
       );
     }
 
-    //print("getItems : $getItems");
     cartRepo.addToCartList(getItems);
     update();
   }
@@ -99,12 +93,9 @@ class CartController extends GetxController {
       _items.forEach((key, value) {
         if (key == product.id) {
           quantity = value.quantity!;
-          /*print(
-              " value.quantity in getQuantity at car_controller : ${value.quantity}");*/
         }
       });
     }
-    //print(" quantity in getQuantity at car_controller : ${quantity}");
 
     return quantity;
   }
@@ -166,6 +157,11 @@ class CartController extends GetxController {
 
   void addToCartList() {
     cartRepo.addToCartList(getItems);
+    update();
+  }
+
+  void clearCartHistory() {
+    cartRepo.clearCartHistory();
     update();
   }
 }

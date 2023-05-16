@@ -1,27 +1,30 @@
 import 'package:ecommerce/controllers/recommended_product_controller.dart';
 import 'package:ecommerce/model/product_models.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
-import 'package:ecommerce/util/app_constants.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
-import 'package:ecommerce/util/goodsitem.dart';
 import 'package:ecommerce/widget/CardContainer.dart';
 import 'package:ecommerce/widget/bigtext.dart';
 import 'package:ecommerce/widget/smalltext.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 class MyWidgetReccommended extends StatefulWidget {
-  const MyWidgetReccommended({super.key});
+  final String token;
+  const MyWidgetReccommended({Key? key, required this.token}) : super(key: key);
 
   @override
   State<MyWidgetReccommended> createState() => _MyWidgetReccommendedState();
 }
 
 class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
+  late String _token;
+
+  void initState() {
+    _token = widget.token;
+    print("token in MyWidgetReccommended : $_token");
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RecommendedProductController>(
@@ -52,7 +55,7 @@ class _MyWidgetReccommendedState extends State<MyWidgetReccommended> {
       ),
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(RounteHelper.getRecommededGoods(index, "home"));
+          Get.toNamed(RounteHelper.getRecommededGoods(index, "home", _token));
         },
         child: Row(
           children: [

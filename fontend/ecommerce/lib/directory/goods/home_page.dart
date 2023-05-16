@@ -1,6 +1,11 @@
 //import 'dart:html';
+import 'package:ecommerce/directory/pages/account/account_page.dart';
+import 'package:ecommerce/directory/pages/address/add_address_page.dart';
 import 'package:ecommerce/directory/pages/cart/cart_history.dart';
 import 'package:ecommerce/directory/pages/main_goods_page.dart';
+import 'package:ecommerce/directory/pages/sign_in/sign_in.dart';
+import 'package:ecommerce/directory/pages/sign_up/authenticate_email.dart';
+import 'package:ecommerce/directory/pages/sign_up/sigh_up_page.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String token;
+  const HomePage({Key? key, required this.token}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,32 +22,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late PersistentTabController _controller;
-  /*int _selectedIndex = 0;
-  List pages = [
-    const MainGoodPage(),
-    Container(child: const Center(child: Text("Next page"))),
-    Container(child: const Center(child: Text("Next next page"))),
-    Container(child: const Center(child: Text("Next next next page"))),
-  ];*/
 
-  /*void onTapNav(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }*/
+  late String _token;
 
   @override
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
+
+    _token = widget.token;
   }
 
   List<Widget> _buildScreens() {
     return [
-      const MainGoodPage(),
-      Container(child: const Center(child: Text("Next page"))),
-      const CartHistory(),
-      Container(child: const Center(child: Text("Next next next page"))),
+      MainGoodPage(
+        token: _token,
+      ),
+      const AddAddressPage(),
+      CartHistory(
+        token: _token,
+      ),
+      const AccountPage(),
     ];
   }
 

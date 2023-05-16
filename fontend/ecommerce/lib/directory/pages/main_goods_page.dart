@@ -11,13 +11,21 @@ import 'package:ecommerce/directory/pages/goods_pagebody.dart';
 import '../../util/dimensionWidget.dart';
 
 class MainGoodPage extends StatefulWidget {
-  const MainGoodPage({super.key});
+  final String token;
+  const MainGoodPage({Key? key, required this.token}) : super(key: key);
 
   @override
   State<MainGoodPage> createState() => _MainGoodPageState();
 }
 
 class _MainGoodPageState extends State<MainGoodPage> {
+  late String _token;
+
+  void initState() {
+    _token = widget.token;
+    print("token in MainGoodPage : $_token");
+  }
+
   @override
   Widget build(BuildContext context) {
     // print("current height is " + MediaQuery.of(context).size.height.toString());
@@ -74,9 +82,9 @@ class _MainGoodPageState extends State<MainGoodPage> {
             ),
           ),
           //body
-          const Expanded(
+          Expanded(
               child: SingleChildScrollView(
-            child: GoodsPageBody(),
+            child: GoodsPageBody(token: _token),
           )),
         ],
       ),

@@ -23,7 +23,9 @@ import 'package:get/get.dart';
 class PopularGoodsDetail extends StatelessWidget {
   final int pageId;
   final String page;
-  const PopularGoodsDetail({Key? key, required this.pageId, required this.page})
+  final String token;
+  const PopularGoodsDetail(
+      {Key? key, required this.pageId, required this.page, required this.token})
       : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class PopularGoodsDetail extends StatelessWidget {
     Get.find<PopularProductController>()
         .initProduct(product, Get.find<CartController>());
     print("Popular product name is ${product.name}, id is ${product.id}");
+    print("token in PopularGoodsDetail: ${token}");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -68,9 +71,10 @@ class PopularGoodsDetail extends StatelessWidget {
                   GestureDetector(
                       onTap: () {
                         if (page == "cartpage") {
-                          Get.toNamed(RounteHelper.getCartPage("cartpage"));
+                          Get.toNamed(RounteHelper.getCartPage(
+                              pageId, "cartpage", token));
                         } else {
-                          Get.toNamed(RounteHelper.getInitial());
+                          Get.toNamed(RounteHelper.getInitial(token));
                         }
                       },
                       child: AppIcon(
@@ -81,7 +85,8 @@ class PopularGoodsDetail extends StatelessWidget {
                     return GestureDetector(
                       onTap: () {
                         if (controller.totalItems >= 1) {
-                          Get.toNamed(RounteHelper.getCartPage("cartpage"));
+                          Get.toNamed(RounteHelper.getCartPage(
+                              product.id, "cartpage", token));
                         }
                       },
                       child: Stack(

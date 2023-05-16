@@ -2,8 +2,6 @@ import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
 import 'package:ecommerce/widget/smalltext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 //การสืบทอดคุณสมบัติของ class StatefulWidget คลาสแม่
 class DetailUnderImage extends StatefulWidget {

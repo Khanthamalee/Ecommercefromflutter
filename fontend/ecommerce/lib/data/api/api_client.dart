@@ -2,37 +2,62 @@ import 'package:ecommerce/util/app_constants.dart';
 import 'package:get/get.dart';
 
 class ApiClient extends GetConnect implements GetxService {
-  //ประกาศตัวแปร
   late String token;
   final String appBaseUrl;
 
-  //Dictionary name _mainHeader
   late Map<String, String> _mainHeader;
 
-  //Default Contructor
   ApiClient({required this.appBaseUrl}) {
-    //input appBaseUrl return baseUrl,timeout,token,_mainHeader
     baseUrl = appBaseUrl;
     timeout = Duration(seconds: 20);
     token = AppConstants.TOKEN;
     _mainHeader = {
-      'Content-type': 'application/json; charset=UTF-16',
-      'Authorization': 'Bearer $token',
+      'Content-type': 'application/json; charset=utf-8',
+      'Authorization': 'Token $token',
     };
   }
-  Future<Response> getData(
-    String uri,
-  ) async {
+
+  void updateHeader(String token) {
+    _mainHeader = {
+      'Content-type': 'application/json; charset=utf-8',
+      'Authorization': 'Token $token',
+    };
+  }
+
+  Future<Response> getData(String uri, {Map<String, String>? headers}) async {
     try {
-      Response response = await get(uri);
-      print("1. baseUrl : $baseUrl");
-      print("2. uri : $uri ===");
-      print("response.body.runtimeType ${response.body.runtimeType}");
+      print("_mainHeader : ${_mainHeader}");
+      Response response = await get(uri, headers: headers ?? _mainHeader);
+      print("1. baseUrlget : $baseUrl");
+      print("2. uriget : $uri ===");
+      print("response.body ${response.body}");
+      print("response.body.runtimeTypeget ${response.body.runtimeType}");
 
       return response;
     } catch (e) {
-      //ถ้าพบ error ให้ statusCode: 1 และ error
-      //print("error = $e");
+      return Response(statusCode: 1, statusText: e.toString());
+    }
+  }
+
+  Future<Response> postData(String uri, dynamic body) async {
+    try {
+      Response response = await post(uri, body);
+      print("uripost : ${uri} , bodypost : ${body}");
+
+      return response;
+    } catch (e) {
+      return Response(statusCode: 1, statusText: e.toString());
+    }
+  }
+
+  Future<Response> putData(String uri, dynamic body,
+      {Map<String, String>? headers}) async {
+    try {
+      Response response = await put(uri, body, headers: headers ?? _mainHeader);
+      print("uriput : ${uri} , bodyput : ${body}");
+
+      return response;
+    } catch (e) {
       return Response(statusCode: 1, statusText: e.toString());
     }
   }

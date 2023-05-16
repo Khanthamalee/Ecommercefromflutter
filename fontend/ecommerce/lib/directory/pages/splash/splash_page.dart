@@ -10,7 +10,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final String token;
+  const SplashScreen({Key? key, required this.token}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late String _token;
 
   Future<void> _loadResource() async {
     await Get.find<PopularProductController>().getPopularProductList();
@@ -40,9 +42,10 @@ class _SplashScreenState extends State<SplashScreen>
           ..repeat();
     _animation =
         CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
-
+    _token = widget.token;
     Timer(const Duration(seconds: 3),
-        () => Get.offNamed(RounteHelper.getInitial()));
+        () => Get.offNamed(RounteHelper.getInitial(_token)));
+    print("token : $_token");
   }
 
   @override
