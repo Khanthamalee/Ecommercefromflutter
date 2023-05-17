@@ -32,6 +32,8 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework.decorators import api_view
 
+
+#test
 def googlemaps_test(request,*args,**kwargs):
 
     gmaps = googlemaps.Client(key='AIzaSyA2nluxS-_G5GygEdIzH0gZ_XopuHPzSIs')
@@ -151,7 +153,6 @@ class PostAndPutprofile(APIView):
         profile_object.type_id = 4
 
         print("body['homeaddress']['homeaddress_id']",body['homeaddress']['homeaddress_id'])
-
         if body['homeaddress']['homeaddress_id']:
             homeaddress_id = body['homeaddress']['homeaddress_id']
             addressname = body['homeaddress']['addressname']
@@ -168,7 +169,9 @@ class PostAndPutprofile(APIView):
 
 
 
+
             try:
+
                 Location1_object = Location1.objects.get(id = homeaddress_id )
                 Location1_object.addressname = addressname
                 Location1_object.address =address
@@ -196,7 +199,7 @@ class PostAndPutprofile(APIView):
                 newLocation1_object.location = location
                 newLocation1_object.type_id = 3
                 newLocation1_object.save()
-                profile_object.homeaddress = Location1.objects.get(id=Location2_object.id)
+                profile_object.homeaddress = Location1.objects.get(id=newLocation1_object.id)
 
         if body['officeaddress']['officeaddress_id']:
             officeaddress_id = body['officeaddress']['officeaddress_id']
@@ -228,7 +231,7 @@ class PostAndPutprofile(APIView):
                 Location2_object.location = location
                 Location2_object.type_id = 5
                 Location2_object.save()
-                profile_object.officeaddress = Location2.objects.get(id=Location2_object.id)
+                
             except:
                 newLocation2_object = Location2()
                 newLocation2_object.addressname = addressname
@@ -243,6 +246,7 @@ class PostAndPutprofile(APIView):
                 newLocation2_object.location = location
                 newLocation2_object.type_id = 5
                 newLocation2_object.save()
+                profile_object.officeaddress = Location2.objects.get(id=newLocation2_object.id)
 
         if body['presentpositionaddress']['presentpositionaddress_id']:
             presentpositionaddress_id = body['presentpositionaddress']['presentpositionaddress_id']

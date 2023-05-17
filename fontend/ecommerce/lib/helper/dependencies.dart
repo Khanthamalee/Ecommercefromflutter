@@ -29,7 +29,8 @@ Future<void> init() async {
   Get.lazyPut(() => PopularProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => RecommendedProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()));
-  Get.lazyPut(() => ProfileRepo(apiClient: Get.find()));
+  Get.lazyPut(
+      () => ProfileRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(
       () => LocationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
 

@@ -38,7 +38,7 @@ class AccountPage extends StatelessWidget {
           backgroundColor: AppColors.mainColor),
       body: GetBuilder<ProfileUserController>(builder: (controller) {
         print(
-            "controller.profileuserProductList :${controller.profileuserProductList}");
+            "controller.profileuserProductList :${controller.getProfileUserList}");
         var datacontroller = controller.profileuserProductList;
         var usercontroller = datacontroller[0]['user'];
         var addresscontroller = datacontroller[2]["homeaddress"]['addressname'];
@@ -158,8 +158,48 @@ class AccountPage extends StatelessWidget {
                   )
                 : CustomLoading())
             : Container(
-                child: const Center(
-                  child: Text("กรุณาเข้าสู่ระบบ"),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: DimensionStaticHeight(context, 20 * 8),
+                        margin: EdgeInsets.only(
+                            left: DimensionStaticWidth(context, 20),
+                            right: DimensionStaticWidth(context, 20)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                DimensionStaticHeight(context, 20)),
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage(
+                                    "assets/image_icon_app/logo.png"))),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(RounteHelper.signInPage);
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: DimensionStaticHeight(context, 20 * 5),
+                          margin: EdgeInsets.only(
+                              left: DimensionStaticWidth(context, 20),
+                              right: DimensionStaticWidth(context, 20)),
+                          decoration: BoxDecoration(
+                            color: AppColors.mainColor,
+                            borderRadius: BorderRadius.circular(
+                                DimensionStaticHeight(context, 20)),
+                          ),
+                          child: BigText(
+                            text: "กรุณาเข้าสู่ระบบ",
+                            color: Colors.white,
+                            size: DimensionStaticHeight(context, 20),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
       }),

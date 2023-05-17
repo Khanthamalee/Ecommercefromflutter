@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../model/profile_model.dart';
+
 class LocationRepo {
   ApiClient apiClient;
   SharedPreferences sharedPreferences;
@@ -24,12 +26,12 @@ class LocationRepo {
 
   String getUserAddress() {
     print(
-        "sharedPreferences.getString(AppConstants.USER_ADDRESS) :${sharedPreferences.getString(AppConstants.USER_ADDRESS)}");
-    return sharedPreferences.getString(AppConstants.USER_ADDRESS) ?? "";
+        "sharedPreferences.getString(AppConstants.PROFILE_USERDATA)  : ${sharedPreferences.getString(AppConstants.PROFILE_USERDATA)}");
+    return sharedPreferences.getString(AppConstants.PROFILE_USERDATA) ?? "";
   }
 
-  Future<Response> addAddress(AddressModel addressModel) async {
+  Future<Response> addDatatoProfileuser(ProfileModel profileModel) async {
     return await apiClient.putData(
-        AppConstants.ADD_USER_ADDRESS, addressModel.toJson());
+        AppConstants.ADD_USER_ADDRESS, profileModel.toJson());
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ecommerce/data/repository/location_repo.dart';
 import 'package:ecommerce/model/address_model.dart';
+import 'package:ecommerce/model/profile_model.dart';
 import 'package:ecommerce/model/response_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -79,9 +80,6 @@ class LocationController extends GetxController implements GetxService {
     }
   }
 
-  List<dynamic> _getAddressList = [];
-  List<dynamic> get getAddressList => _getAddressList;
-
   Future<String> getAddressFromGeocode(LatLng latlng) async {
     String _address = "ไม่พบที่อยู่ของคุณ";
     Response response = await locationRepo.getAddressfromGeocode(latlng);
@@ -141,22 +139,42 @@ class LocationController extends GetxController implements GetxService {
   late Map<String, dynamic> _getAddress;
   Map get getAddress => _getAddress;
 
-  AddressModel getUserAddress() {
-    late AddressModel _addressModel;
+  ProfileModel getUserAddress() {
+    late ProfileModel _profileModel;
     _getAddress = jsonDecode(locationRepo.getUserAddress());
-    print("_getAddress : ${_getAddress}");
+    print("_getAddress in getUserAddress : ${_getAddress}");
     try {
-      _addressModel =
-          AddressModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
-      print("_addressModel : ${_addressModel.address}");
+      _profileModel =
+          ProfileModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
+      print("_profileModel in getUserAddress : ${_profileModel.user}");
     } catch (e) {
       print("e in getUserAddress :${e}");
     }
-    return _addressModel;
+    return _profileModel;
   }
 
   void setAddressTypeIndex(int index) {
     _addressTypeIndex = index;
     update();
+  }
+
+  List<dynamic> _getAddressList = [];
+  List<dynamic> get getAddressList => _getAddressList;
+
+  Future<ResponseModel> addDatatoProfileuser(ProfileModel profileModel) async {
+    _loading = true;
+    update();
+    Response response = await locationRepo.addDatatoProfileuser(profileModel);
+    ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      String message = response.body("message");
+      responseModel = ResponseModel(true, message);
+      print("message");
+    } else {
+      print("ไม่สามารถบันทึกข้อมูลได้ค่ะ");
+      responseModel = ResponseModel(false, response.statusText!);
+    }
+    update();
+    return responseModel;
   }
 }

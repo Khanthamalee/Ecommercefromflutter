@@ -6,7 +6,7 @@ class AppConstants {
   //static const String BASE_URL = "http://mvs.bslmeiyu.com";
   //static const String BASE_URL = "https://raw.githubusercontent.com";
   static const String BASE_URL =
-      "https://d1f8-2001-fb1-141-5fbd-2413-b624-feb4-60.ngrok-free.app/";
+      "https://6c8a-27-145-141-14.ngrok-free.app/";
 
   //static const String POPULAR_PODUCT_URI = "/api/v1/products/popular";
   //static const String POPULAR_PODUCT_URI =
@@ -33,6 +33,6 @@ class AppConstants {
   static const String CART_HISTORY_LIST = "Cart-history-list";
 
   static const String GEOCODE_URI = "googleAddress-page/";
-  static const String USER_ADDRESS = "user_address";
+  static const String PROFILE_USERDATA = "profile_userdata";
   static const String ADD_USER_ADDRESS = "PostAndPutprofile/";
 }
