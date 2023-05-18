@@ -19,9 +19,9 @@ class LocationController extends GetxController implements GetxService {
   Placemark _pickPlacemark = Placemark();
   Placemark get placemark => _placemark;
   Placemark get pickplacemark => _pickPlacemark;
-  List<AddressModel> _addressList = [];
-  List<AddressModel> get addressList => _addressList;
-  late List<AddressModel> _allAddressList;
+  List<ProfileModel> _addressList = [];
+  List<ProfileModel> get addressList => _addressList;
+  late List<ProfileModel> _allAddressList;
   final List<String> _addressTypeList = ["home", "office", "other"];
   List<String> get addressTypeList => _addressTypeList;
   int _addressTypeIndex = 0;
@@ -93,49 +93,6 @@ class LocationController extends GetxController implements GetxService {
     return _address;
   }
 
-  // Future<ResponseModel> getAddressfromGeocode(LatLng latLng) async {
-  //   String _address = "ไม่พบที่อยู่ของคุณ";
-  //   Response response = await locationRepo.getAddressfromGeocode(latLng);
-
-  //   //print(response.statusCode);
-  //   late ResponseModel responseModel;
-  //   if (response.statusCode == 200) {
-  //     _getAddressList = [];
-  //     var latitude = response.body['latitude'];
-  //     var longitude = response.body['longitude'];
-  //     var fulladdress = response.body['full_address'];
-  //     var address = response.body['address'];
-  //     var tambon = response.body['tambon'];
-  //     var distric = response.body['distric'];
-  //     var province = response.body['province'];
-  //     var city = response.body['city'];
-
-  //     String _address = fulladdress;
-
-  //     _getAddressList.addAll({
-  //       {'latitude': latitude},
-  //       {'longitude': longitude},
-  //       {'fulladdress': fulladdress},
-  //       {'address': address},
-  //       {'tambon': tambon},
-  //       {'distric': distric},
-  //       {'province': province},
-  //       {'city': city}
-  //     });
-  //     //update();
-  //     print(_getAddressList);
-  //     print("จัดเรียงข้อมูลที่อยู่เรียบร้อยแล้ว");
-  //     responseModel = ResponseModel(true, "$_address");
-  //     //_address = response.body['full_address'].toString();
-  //     //print("full_address : ${response.body['full_address'].toString()}");
-  //   } else {
-  //     print("Error getting the google API");
-  //     responseModel = ResponseModel(false, "ดึงข้อมูลไม่สำเร็จ");
-  //   }
-  //   update();
-  //   return responseModel;
-  // }
-
   late Map<String, dynamic> _getAddress;
   Map get getAddress => _getAddress;
 
@@ -146,6 +103,7 @@ class LocationController extends GetxController implements GetxService {
     try {
       _profileModel =
           ProfileModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
+      _addressList.addAll({_profileModel!.homeaddress!["addressname"]});
       print("_profileModel in getUserAddress : ${_profileModel.user}");
     } catch (e) {
       print("e in getUserAddress :${e}");
@@ -167,7 +125,8 @@ class LocationController extends GetxController implements GetxService {
     Response response = await locationRepo.addDatatoProfileuser(profileModel);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      String message = response.body("message");
+      print(response.body);
+      String message = response.body["msg"];
       responseModel = ResponseModel(true, message);
       print("message");
     } else {

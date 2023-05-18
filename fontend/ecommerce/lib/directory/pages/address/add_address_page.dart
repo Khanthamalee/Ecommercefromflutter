@@ -7,7 +7,6 @@ import 'package:ecommerce/directory/pages/sign_up/sign_up_width.dart';
 import 'package:ecommerce/model/profile_model.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
-import 'package:ecommerce/widget/app_icon.dart';
 import 'package:ecommerce/widget/bigtext.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,8 +37,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
   void initState() {
     super.initState();
     _isLogged = Get.find<AuthController>().userLoggedIn();
-    if (_isLogged &&
-        Get.find<ProfileUserController>().profileuserProductList == null) {
+    if (_isLogged && Get.find<ProfileUserController>().profileModel == null) {
       Get.find<ProfileUserController>().getProfileUserList();
     }
     if (Get.find<LocationController>().addressList.isNotEmpty) {
@@ -56,189 +54,11 @@ class _AddAddressPageState extends State<AddAddressPage> {
   }
 
   void SaveAddresstoProfileuser() {
-    Map<String, dynamic> user;
-    Map<String, dynamic> phone;
-    Map<String, dynamic> homeaddress;
-    Map<String, dynamic> officeaddress;
-    Map<String, dynamic> presentpositionaddress;
-    Map<String, dynamic> orderCount;
-    ProfileModel _profileModel;
-
-    var locationControllerdata = Get.find<LocationController>()
-        .addressTypeList[Get.find<LocationController>().addressTypeIndex];
-
-    var profileUserControllerdata =
-        Get.find<ProfileUserController>().profileuserProductList;
-    if (locationControllerdata == "home") {
-      print(Get.find<ProfileUserController>().profileuserProductList);
-
-      user = profileUserControllerdata[0]["user"];
-      print("user in SaveAddresstoProfileuser $user");
-      user["firstname"] = _firstnamecontactController.text;
-      user["lastname"] = _lastnamecontactController.text;
-      print("user in SaveAddresstoProfileuser after edit $user");
-
-      phone = profileUserControllerdata[1];
-      phone["phone"] = _contactPersonalNumber.text;
-      print("phone : ${phone["phone"]}");
-
-      orderCount = profileUserControllerdata[5];
-      print("orderCount :${orderCount}");
-
-      homeaddress = profileUserControllerdata[2]["homeaddress"];
-
-      print("homeaddress in home : ${homeaddress}");
-
-      homeaddress['addressname'] = _addressController.text;
-      homeaddress['latitude'] =
-          Get.find<LocationController>().position.latitude.toString();
-      homeaddress['longitude'] =
-          Get.find<LocationController>().position.longitude.toString();
-      print("homeaddress in SaveAddresstoProfileuser after edit $homeaddress");
-
-      officeaddress = profileUserControllerdata[3]["officeaddress"];
-      officeaddress['latitude'] = officeaddress['latitude'].toString();
-      officeaddress['longitude'] = officeaddress['longitude'].toString();
-      print("officeaddress in home $officeaddress");
-      presentpositionaddress =
-          profileUserControllerdata[4]["presentpositionaddress"];
-      presentpositionaddress['latitude'] =
-          presentpositionaddress['latitude'].toString();
-      presentpositionaddress['longitude'] =
-          presentpositionaddress['longitude'].toString();
-      print("presentpositionaddress in home $presentpositionaddress");
-      print(homeaddress.runtimeType);
-      _profileModel = ProfileModel(
-        user: user,
-        phone: phone["phone"],
-        homeaddress: homeaddress,
-        officeaddress: officeaddress,
-        presentpositionaddress: presentpositionaddress,
-        orderCount: orderCount['orderCount'] ?? 0,
-        typeId: 4,
-      );
-      Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel)
-          .then((response) {
-        if (response.isSuccess) {
-          //Get.back();
-          Get.snackbar("ข้อมูลของคุณ", "ถูกบันทึกเรียบร้อยแล้ว");
-        } else {
-          Get.snackbar("ข้อมูลของคุณ", "ไม่สามารถบันทึกได้ค่ะ");
-        }
-      });
-    } else if (locationControllerdata == "office") {
-      print(Get.find<ProfileUserController>().profileuserProductList);
-      user = profileUserControllerdata[0]["user"];
-      print("user in SaveAddresstoProfileuser $user");
-      user["firstname"] = _firstnamecontactController.text;
-      user["lastname"] = _lastnamecontactController.text;
-      print("user in SaveAddresstoProfileuser after edit $user");
-
-      phone = profileUserControllerdata[1];
-      phone["phone"] = _contactPersonalNumber.text;
-      print("phone : ${phone["phone"]}");
-
-      orderCount = profileUserControllerdata[5];
-      print("orderCount :${orderCount}");
-
-      homeaddress = profileUserControllerdata[2]["homeaddress"];
-      homeaddress['latitude'] = homeaddress['latitude'].toString();
-      homeaddress['longitude'] = homeaddress['longitude'].toString();
-      print("homeaddress in  in office  $homeaddress");
-      officeaddress = profileUserControllerdata[3]["officeaddress"];
-      print("officeaddress  in office  $officeaddress");
-
-      officeaddress['addressname'] = _addressController.text;
-      officeaddress['latitude'] =
-          Get.find<LocationController>().position.latitude.toString();
-      officeaddress['longitude'] =
-          Get.find<LocationController>().position.longitude.toString();
-
-      print(
-          "officeaddress in SaveAddresstoProfileuser in office $officeaddress");
-      presentpositionaddress =
-          profileUserControllerdata[4]["presentpositionaddress"];
-      presentpositionaddress['latitude'] =
-          presentpositionaddress['latitude'].toString();
-      presentpositionaddress['longitude'] =
-          presentpositionaddress['longitude'].toString();
-      print("presentpositionaddress in office $presentpositionaddress");
-      print(homeaddress.runtimeType);
-      _profileModel = ProfileModel(
-        user: user,
-        phone: phone["phone"],
-        homeaddress: homeaddress,
-        officeaddress: officeaddress,
-        presentpositionaddress: presentpositionaddress,
-        orderCount: orderCount['orderCount'] ?? 0,
-        typeId: 4,
-      );
-      Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel)
-          .then((response) {
-        if (response.isSuccess) {
-          //Get.back();
-          Get.snackbar("ข้อมูลของคุณ", "ถูกบันทึกเรียบร้อยแล้ว");
-        } else {
-          Get.snackbar("ข้อมูลของคุณ", "ไม่สามารถบันทึกได้ค่ะ");
-        }
-      });
-    } else if (locationControllerdata == "other") {
-      print(Get.find<ProfileUserController>().profileuserProductList);
-      user = profileUserControllerdata[0]["user"];
-      print("user in SaveAddresstoProfileuser $user");
-      user["firstname"] = _firstnamecontactController.text;
-      user["lastname"] = _lastnamecontactController.text;
-      print("user in SaveAddresstoProfileuser after edit $user");
-
-      phone = profileUserControllerdata[1];
-      phone["phone"] = _contactPersonalNumber.text;
-      print("phone : ${phone["phone"]}");
-
-      orderCount = profileUserControllerdata[5];
-      print("orderCount :${orderCount}");
-
-      homeaddress = profileUserControllerdata[2]["homeaddress"];
-      homeaddress['latitude'] = homeaddress['latitude'].toString();
-      homeaddress['longitude'] = homeaddress['longitude'].toString();
-      print("homeaddress in  in other  $homeaddress");
-      officeaddress = profileUserControllerdata[3]["officeaddress"];
-      officeaddress['latitude'] = officeaddress['latitude'].toString();
-      officeaddress['longitude'] = officeaddress['longitude'].toString();
-      print("officeaddress  in other  $officeaddress");
-
-      presentpositionaddress =
-          profileUserControllerdata[4]["presentpositionaddress"];
-      print("presentpositionaddress in other $presentpositionaddress");
-      presentpositionaddress['addressname'] = _addressController.text;
-      presentpositionaddress['latitude'] =
-          Get.find<LocationController>().position.latitude.toString();
-      presentpositionaddress['longitude'] =
-          Get.find<LocationController>().position.longitude.toString();
-
-      print(
-          "presentpositionaddress in SaveAddresstoProfileuser in other $presentpositionaddress");
-      _profileModel = ProfileModel(
-        user: user,
-        phone: phone["phone"],
-        homeaddress: homeaddress,
-        officeaddress: officeaddress,
-        presentpositionaddress: presentpositionaddress,
-        orderCount: orderCount['orderCount'] ?? 0,
-        typeId: 4,
-      );
-      Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel)
-          .then((response) {
-        if (response.isSuccess) {
-          //Get.back();
-          Get.snackbar("ข้อมูลของคุณ", "ถูกบันทึกเรียบร้อยแล้ว");
-        } else {
-          Get.snackbar("ข้อมูลของคุณ", "ไม่สามารถบันทึกได้ค่ะ");
-        }
-      });
-    }
+    Get.find<ProfileUserController>().SaveAddresstoProfileuser(
+        _firstnamecontactController.text,
+        _lastnamecontactController.text,
+        _contactPersonalNumber.text,
+        _addressController.text);
   }
 
   @override
@@ -254,21 +74,20 @@ class _AddAddressPageState extends State<AddAddressPage> {
         backgroundColor: AppColors.mainColor,
       ),
       body: GetBuilder<ProfileUserController>(builder: (profilecontroller) {
-        if (profilecontroller.profileuserProductList != null &&
+        if (profilecontroller.profileModel != null &&
             _firstnamecontactController.text.isEmpty) {
           print("profilecontroller in AddAddressPage${profilecontroller}");
-          var datacontroller = profilecontroller.profileuserProductList;
+          var datacontroller = profilecontroller.profileModel;
 
-          var usercontroller = datacontroller[0]['user'];
-          _firstnamecontactController.text = usercontroller["firstname"];
-          _lastnamecontactController.text = usercontroller["lastname"];
-          _contactPersonalNumber.text = "${datacontroller[1]["phone"]}";
+          var usercontroller = profilecontroller.profileModel!;
+          _firstnamecontactController.text = usercontroller.user!["firstname"];
+          _lastnamecontactController.text = usercontroller.user!["lastname"];
+          _contactPersonalNumber.text = "${datacontroller!.phone}";
           if (Get.find<LocationController>().addressList.isNotEmpty) {
             _addressController.text = Get.find<LocationController>()
                 .getUserAddress()
                 .user![0]["firstname"];
-            print(
-                "Get.find<LocationController>().getUserAddress().user![0]['firstname'] : ${_addressController.text}");
+            print("addressList.isNotEmpty");
           }
         }
         return GetBuilder<LocationController>(builder: (locationcontroller) {
@@ -445,10 +264,6 @@ class _AddAddressPageState extends State<AddAddressPage> {
           children: [
             Container(
               height: DimensionStaticHeight(context, 90),
-              // padding: EdgeInsets.only(
-              //   top: DimensionStaticHeight(context, 10),
-              //   //bottom: DimensionStaticHeight(context, 10),
-              // ),
               decoration: BoxDecoration(
                 color: AppColors.buttonbackgroungColor,
                 borderRadius: BorderRadius.only(

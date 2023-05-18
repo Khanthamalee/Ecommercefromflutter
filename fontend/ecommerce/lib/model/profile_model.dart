@@ -1,55 +1,70 @@
 class ProfileModel {
-  late Map<String, dynamic>? user;
-  late String? phone;
-  late Map<String, dynamic>? homeaddress;
-  late Map<String, dynamic>? officeaddress;
-  late Map<String, dynamic>? presentpositionaddress;
-  late int? orderCount;
-  late int? typeId;
+  Map<String, dynamic>? _user;
+  String? _phone;
+  Map<String, dynamic>? _homeaddress;
+  Map<String, dynamic>? _officeaddress;
+  Map<String, dynamic>? _presentpositionaddress;
+  int? _orderCount;
+  int? _typeId;
 
   ProfileModel(
-      {required this.user,
-      required this.phone,
-      required this.homeaddress,
-      required this.officeaddress,
-      required this.presentpositionaddress,
-      required this.orderCount,
-      this.typeId});
+      {required user,
+      required phone,
+      required homeaddress,
+      required officeaddress,
+      required presentpositionaddress,
+      required orderCount,
+      typeId}) {
+    _user = user;
+    _phone = phone;
+    _homeaddress = homeaddress;
+    _officeaddress = officeaddress;
+    _presentpositionaddress = presentpositionaddress;
+    _orderCount = orderCount;
+    _typeId = typeId;
+  }
+  Map<String, dynamic>? get user => _user;
+  String? get phone => _phone;
+  Map<String, dynamic>? get homeaddress => _homeaddress;
+  Map<String, dynamic>? get officeaddress => _officeaddress;
+  Map<String, dynamic>? get presentpositionaddress => _presentpositionaddress;
+  int? get orderCount => _orderCount;
+  int? get typeId => _typeId;
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
-    user = (json['user'] != null ? User.fromJson(json['user']) : null)
+    _user = (json['user'] != null ? User.fromJson(json['user']) : null)
         as Map<String, dynamic>?;
-    phone = json['phone'];
-    homeaddress = (json['homeaddress'] != null
+    _phone = json['phone'];
+    _homeaddress = (json['homeaddress'] != null
         ? Homeaddress.fromJson(json['homeaddress'])
         : null) as Map<String, dynamic>?;
-    officeaddress = (json['officeaddress'] != null
+    _officeaddress = (json['officeaddress'] != null
         ? Officeaddress.fromJson(json['officeaddress'])
         : null) as Map<String, dynamic>?;
-    presentpositionaddress = (json['presentpositionaddress'] != null
+    _presentpositionaddress = (json['presentpositionaddress'] != null
         ? Presentpositionaddress.fromJson(json['presentpositionaddress'])
         : null) as Map<String, dynamic>?;
-    orderCount = json['order_count'];
-    typeId = json['type_id'];
+    _orderCount = json['order_count'];
+    _typeId = json['type_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.user != null) {
-      data['user'] = this.user!;
+    if (this._user != null) {
+      data['user'] = this._user!;
     }
-    data['phone'] = this.phone;
-    if (this.homeaddress != null) {
-      data['homeaddress'] = this.homeaddress!;
+    data['phone'] = this._phone;
+    if (this._homeaddress != null) {
+      data['homeaddress'] = this._homeaddress!;
     }
-    if (this.officeaddress != null) {
-      data['officeaddress'] = this.officeaddress!;
+    if (this._officeaddress != null) {
+      data['officeaddress'] = this._officeaddress!;
     }
-    if (this.presentpositionaddress != null) {
-      data['presentpositionaddress'] = this.presentpositionaddress!;
+    if (this._presentpositionaddress != null) {
+      data['presentpositionaddress'] = this._presentpositionaddress!;
     }
-    data['order_count'] = this.orderCount;
-    data['type_id'] = this.typeId;
+    data['order_count'] = this._orderCount;
+    data['type_id'] = this._typeId;
     return data;
   }
 }

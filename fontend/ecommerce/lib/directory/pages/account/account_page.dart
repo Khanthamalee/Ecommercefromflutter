@@ -5,9 +5,7 @@ import 'package:ecommerce/controllers/profile_controlle.dart';
 import 'package:ecommerce/directory/pages/account/account_widget.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
-import 'package:ecommerce/widget/app_icon.dart';
 import 'package:ecommerce/widget/bigtext.dart';
-import 'package:ecommerce/widget/smalltext.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:get/get.dart';
@@ -18,8 +16,10 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
+
     if (_userLoggedIn) {
       Get.find<ProfileUserController>().getProfileUserList();
+      print("ล็อกอินแล้ว");
     }
     return Scaffold(
       appBar: AppBar(
@@ -38,10 +38,10 @@ class AccountPage extends StatelessWidget {
           backgroundColor: AppColors.mainColor),
       body: GetBuilder<ProfileUserController>(builder: (controller) {
         print(
-            "controller.profileuserProductList :${controller.getProfileUserList}");
-        var datacontroller = controller.profileuserProductList;
-        var usercontroller = datacontroller[0]['user'];
-        var addresscontroller = datacontroller[2]["homeaddress"]['addressname'];
+            "controller.profileuserProductList :${controller.profileModel!.user}");
+        var datacontroller = controller.profileModel!;
+        var usercontroller = datacontroller.user!;
+        var addresscontroller = datacontroller.homeaddress!['addressname'];
         return _userLoggedIn
             ? (controller.isLoading
                 ? SingleChildScrollView(
@@ -73,7 +73,7 @@ class AccountPage extends StatelessWidget {
                           ),
                           DimensionheightWidget(context, 10),
                           AccountWidget(
-                            text: "${datacontroller[1]["phone"]}",
+                            text: "${datacontroller.phone}",
                             iconColor: Colors.white,
                             bgiconColor: Colors.lightGreenAccent.shade700,
                             icon: Icons.phone_bluetooth_speaker_outlined,
@@ -101,8 +101,7 @@ class AccountPage extends StatelessWidget {
                           ),
                           DimensionheightWidget(context, 10),
                           AccountWidget(
-                            text:
-                                "จำนวน order ${datacontroller[3]['order_count']}",
+                            text: "จำนวน order ${datacontroller.orderCount}",
                             iconColor: Colors.white,
                             bgiconColor: Colors.red.shade400,
                             icon: Icons.comment_bank_outlined,

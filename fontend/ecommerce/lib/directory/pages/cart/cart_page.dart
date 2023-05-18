@@ -369,12 +369,13 @@ class CartPage extends StatelessWidget {
                           if (Get.find<AuthController>().userLoggedIn()) {
                             //cartcontroller.addToHistory();
                             if (Get.find<LocationController>()
-                                .addressList
+                                .getAddress
                                 .isEmpty) {
+                              Get.back();
                               Get.toNamed(RounteHelper.getAddAddressPage());
                             }
                           } else {
-                            () => Get.toNamed(RounteHelper.getSignInPage());
+                            Get.toNamed(RounteHelper.getSignInPage());
                           }
                         },
                         child: Container(
