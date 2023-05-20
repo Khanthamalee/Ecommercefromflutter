@@ -103,7 +103,6 @@ class RegisterViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
-    pagination_class = CustomPagination
     authentication_classes = [authentication.SessionAuthentication,authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     lookup_field ='pk'
@@ -144,6 +143,7 @@ class PostAndPutprofile(APIView):
         print("body :", body)
 
         user = body['user']['user_id']
+        print(user)
         username = body['user']['username']
 
         profile_object = Profile.objects.get(user = user)
@@ -151,6 +151,9 @@ class PostAndPutprofile(APIView):
         profile_object.phone = body['phone']
         profile_object.order_count = 0
         profile_object.type_id = 4
+
+        message = {}
+        messagelist = []
 
         print("body['homeaddress']['homeaddress_id']",body['homeaddress']['homeaddress_id'])
         if body['homeaddress']['homeaddress_id']:
@@ -167,9 +170,6 @@ class PostAndPutprofile(APIView):
             location = body['homeaddress']['latitude']+","+body['homeaddress']['longitude']
             print(location)
 
-
-
-
             try:
 
                 Location1_object = Location1.objects.get(id = homeaddress_id )
@@ -185,7 +185,9 @@ class PostAndPutprofile(APIView):
                 Location1_object.location = location
                 Location1_object.type_id = 3
                 Location1_object.save()
-                return Response({'msg':'Data homeaddress saved successful'}, status=status.HTTP_200_OK)
+                messagelist = append("Homeaddress ProfileData saved")
+
+
             except:
                 newLocation1_object = Location1()
                 newLocation1_object.addressname = addressname
@@ -201,7 +203,9 @@ class PostAndPutprofile(APIView):
                 newLocation1_object.type_id = 3
                 newLocation1_object.save()
                 profile_object.homeaddress = Location1.objects.get(id=newLocation1_object.id)
-                return Response({'msg':'Data newhomeaddress created successful'}, status=status.HTTP_201_CREATED)
+                messagelist.append("Homeaddress ProfileData created")
+
+
 
         if body['officeaddress']['officeaddress_id']:
             officeaddress_id = body['officeaddress']['officeaddress_id']
@@ -233,8 +237,9 @@ class PostAndPutprofile(APIView):
                 Location2_object.location = location
                 Location2_object.type_id = 5
                 Location2_object.save()
-                return Response({'msg':'Data officeaddress saved successful'}, status=status.HTTP_200_OK)
+                messagelist.append("Officeaddress ProfileData saved")
                 
+
             except:
                 newLocation2_object = Location2()
                 newLocation2_object.addressname = addressname
@@ -250,7 +255,9 @@ class PostAndPutprofile(APIView):
                 newLocation2_object.type_id = 5
                 newLocation2_object.save()
                 profile_object.officeaddress = Location2.objects.get(id=newLocation2_object.id)
-                return Response({'msg':'Data newofficeaddress created successful'}, status=status.HTTP_201_CREATED)
+                messagelist.append("Officeaddress ProfileData created")
+
+
 
         if body['presentpositionaddress']['presentpositionaddress_id']:
             presentpositionaddress_id = body['presentpositionaddress']['presentpositionaddress_id']
@@ -280,7 +287,9 @@ class PostAndPutprofile(APIView):
                 Location3_object.location = location
                 Location3_object.type_id = 6
                 Location3_object.save()
-                return Response({'msg':'Data presentpositionaddress saved successful'}, status=status.HTTP_200_OK)
+                messagelist.append("presentpositionaddress ProfileData saved")
+
+
 
             except:
                 newLocation3_object = Location3()
@@ -297,12 +306,14 @@ class PostAndPutprofile(APIView):
                 newLocation3_object.type_id = 6
                 newLocation3_object.save()
                 profile_object.presentpositionaddress = Location3.objects.get(id=newLocation3_object.id)
-                return Response({'msg':'Data newpresentpositionaddress created successful'}, status=status.HTTP_201_CREATED)
-
-        
+                messagelist.append("presentpositionaddress ProfileData created")
+                
 
         profile_object.save()
-        return JsonResponse({"body" : body
+        message["msg"]= messagelist
+
+
+        return JsonResponse({"body" : body,"msg":message["msg"]
         })
 
 

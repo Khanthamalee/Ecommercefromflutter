@@ -1,9 +1,12 @@
 import 'package:ecommerce/controllers/location_controller.dart';
 import 'package:ecommerce/data/repository/profile_repo.dart';
 import 'package:ecommerce/model/Profileusermodel.dart';
-import 'package:ecommerce/model/profile_model.dart';
+import 'package:ecommerce/model/address_model.dart';
+import 'package:ecommerce/model/positiontoMapModel.dart';
+import 'package:ecommerce/model/profile_stringModel.dart';
 import 'package:ecommerce/model/response_model.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class ProfileUserController extends GetxController implements GetxService {
@@ -17,16 +20,16 @@ class ProfileUserController extends GetxController implements GetxService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  UserModel? _userModel;
-  UserModel? get userModel => _userModel;
+  ProfileuserModel? _profileuserModel;
+  ProfileuserModel? get profileiserModel => _profileuserModel;
 
-  ProfileModel? _profileModel;
-  ProfileModel? get profileModel => _profileModel;
+  late AddressModel _addressModel;
+  AddressModel get addressModel => _addressModel;
 
   Future<ResponseModel> getProfileUserList() async {
     Response response = await profileRepo.getProfileUserList();
 
-    print(response.body);
+    print("response.body in getProfileUserList ${response.body}");
     print(response.body.runtimeType);
 
     late ResponseModel responseModel;
@@ -34,14 +37,17 @@ class ProfileUserController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _profileuserProductList = [];
 
-      //จัดเรียงข้อมูลจาก API ให้ดึงง่าย
-      Map<String, dynamic> user = response.body['products'][0]['user'];
-      var phone = response.body['products'][0]['phone'];
+      _profileuserModel = ProfileuserModel.fromJson(response.body[0]);
+      print("object profileuserModel : ${_profileuserModel}");
+      print(
+          "object _profileuserModel?.products.user.username : ${_profileuserModel!.user!.username}");
 
-      Map<String, dynamic> homeaddress =
-          response.body['products'][0]['homeaddress'];
+      Map<String, dynamic> user = response.body[0]['user'];
+      var phone = response.body[0]['phone'];
+
+      Map<String, dynamic> homeaddress = response.body[0]['homeaddress'];
       if (homeaddress["homeaddress_id"] == '') {
-        homeaddress = response.body['products'][0]['homeaddress'];
+        homeaddress = response.body[0]['homeaddress'];
         homeaddress["homeaddress_id"] = 100000000000000000;
         homeaddress["latitude"] = "13.72917";
         homeaddress["longitude"] = "100.52389";
@@ -55,14 +61,13 @@ class ProfileUserController extends GetxController implements GetxService {
         print("ไม่มี homeaddress_id ");
         print(homeaddress);
       } else {
-        homeaddress = response.body['products'][0]['homeaddress'];
+        homeaddress = response.body[0]['homeaddress'];
         print("มี homeaddress_id");
       }
 
-      Map<String, dynamic> officeaddress =
-          response.body['products'][0]['officeaddress'];
+      Map<String, dynamic> officeaddress = response.body[0]['officeaddress'];
       if (officeaddress["officeaddress_id"] == '') {
-        officeaddress = response.body['products'][0]['officeaddress'];
+        officeaddress = response.body[0]['officeaddress'];
         officeaddress["officeaddress_id"] = 100000000000000000;
         officeaddress["latitude"] = "13.72917";
         officeaddress["longitude"] = "100.52389";
@@ -76,15 +81,14 @@ class ProfileUserController extends GetxController implements GetxService {
         print("ไม่มี officeaddress_id ");
         print(officeaddress);
       } else {
-        officeaddress = response.body['products'][0]['officeaddress'];
+        officeaddress = response.body[0]['officeaddress'];
         print("มี officeaddress_id");
       }
       print("homeaddress : ${homeaddress}");
       Map<String, dynamic> presentpositionaddress =
-          response.body['products'][0]['presentpositionaddress'];
+          response.body[0]['presentpositionaddress'];
       if (presentpositionaddress["presentpositionaddress_id"] == '') {
-        presentpositionaddress =
-            response.body['products'][0]['presentpositionaddress'];
+        presentpositionaddress = response.body[0]['presentpositionaddress'];
         presentpositionaddress["presentpositionaddress_id"] =
             100000000000000000;
         presentpositionaddress["latitude"] = "13.72917";
@@ -99,8 +103,7 @@ class ProfileUserController extends GetxController implements GetxService {
         print("ไม่มี presentpositionaddress_id ");
         print(officeaddress);
       } else {
-        presentpositionaddress =
-            response.body['products'][0]['presentpositionaddress'];
+        presentpositionaddress = response.body[0]['presentpositionaddress'];
         print("มี presentpositionaddress_id");
       }
       var order_count;
@@ -109,7 +112,7 @@ class ProfileUserController extends GetxController implements GetxService {
 
         print("order_count ยังไม่มี");
       } else {
-        order_count = response.body['products'][0]['order_count'];
+        order_count = response.body[0]['order_count'];
         print("order_count มีแล้ว");
       }
 
@@ -133,27 +136,6 @@ class ProfileUserController extends GetxController implements GetxService {
       _isLoading = true;
       update();
 
-      profileRepo.saveprofileuser(
-          user,
-          phone,
-          {"homeaddress": homeaddress},
-          {"officeaddress": officeaddress},
-          {"presentpositionaddress": presentpositionaddress},
-          order_count);
-
-      _userModel = UserModel.fromJson({"user": user});
-      print("_userModel :${_userModel!.user!.firstname}");
-      print("_userModel.runtimeType :${_userModel.runtimeType}");
-
-      _profileModel = ProfileModel(
-          user: user,
-          phone: phone,
-          homeaddress: homeaddress,
-          officeaddress: officeaddress,
-          presentpositionaddress: presentpositionaddress,
-          orderCount: order_count);
-      print("_profileModel : ${_profileModel!.user!["username"].runtimeType}");
-
       responseModel = ResponseModel(true, "จัดเรียงข้อมูลสำเร็จ");
       print("true in registration : ${responseModel.message}");
     } else {
@@ -169,6 +151,7 @@ class ProfileUserController extends GetxController implements GetxService {
     String lastnamecontactController,
     String contactPersonalNumber,
     String addressController,
+    AddressModel addressModel,
   ) {
     Map<String, dynamic> user;
     Map<String, dynamic> phone;
@@ -216,23 +199,66 @@ class ProfileUserController extends GetxController implements GetxService {
       print("officeaddress in home $officeaddress");
       presentpositionaddress =
           profileUserControllerdata[4]["presentpositionaddress"];
-      presentpositionaddress['latitude'] =
-          presentpositionaddress['latitude'].toString();
-      presentpositionaddress['longitude'] =
-          presentpositionaddress['longitude'].toString();
+      presentpositionaddress['latitude'] = presentpositionaddress['latitude'];
+      presentpositionaddress['longitude'] = presentpositionaddress['longitude'];
       print("presentpositionaddress in home $presentpositionaddress");
       print(homeaddress.runtimeType);
+
+      //ObjectModelsavetoAPI();
+
       _profileModel = ProfileModel(
-        user: user,
+        user: UserModel(
+            userId: user["user_id"],
+            username: user["username"],
+            firstname: user["firstname"],
+            lastname: user["lastname"],
+            email: user["email"]),
         phone: phone["phone"],
-        homeaddress: homeaddress,
-        officeaddress: officeaddress,
-        presentpositionaddress: presentpositionaddress,
+        homeaddress: HomeaddressModel(
+          homeaddressId: homeaddress["homeaddress_id"],
+          latitude: homeaddress["latitude"].toString(),
+          longitude: homeaddress["longitude"].toString(),
+          addressname: homeaddress["addressname"],
+          address: homeaddress["address"],
+          tombon: homeaddress["tombon"],
+          amphure: homeaddress["amphure"],
+          province: homeaddress["province"],
+          city: homeaddress["city"],
+          zipCode: homeaddress["zip_code"],
+          typeId: homeaddress["type_Id"],
+        ),
+        officeaddress: OfficeaddressModel(
+          officeaddressId: officeaddress["officeaddress_id"],
+          latitude: officeaddress["latitude"].toString(),
+          longitude: officeaddress["longitude"].toString(),
+          addressname: officeaddress["addressname"],
+          address: officeaddress["address"],
+          tombon: officeaddress["tombon"],
+          amphure: officeaddress["amphure"],
+          province: officeaddress["province"],
+          city: officeaddress["city"],
+          zipCode: officeaddress["zip_code"],
+          typeId: officeaddress["type_Id"],
+        ),
+        presentpositionaddress: PresentpositionaddressModel(
+          presentpositionaddressId: homeaddress["presentpositionaddress_id"],
+          latitude: presentpositionaddress["latitude"].toString(),
+          longitude: presentpositionaddress["longitude"].toString(),
+          addressname: presentpositionaddress["addressname"],
+          address: presentpositionaddress["address"],
+          tombon: presentpositionaddress["tombon"],
+          amphure: presentpositionaddress["amphure"],
+          province: presentpositionaddress["province"],
+          city: presentpositionaddress["city"],
+          zipCode: presentpositionaddress["zip_code"],
+          typeId: presentpositionaddress["type_Id"],
+        ),
         orderCount: orderCount['orderCount'] ?? 0,
         typeId: 4,
       );
+
       Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel)
+          .addDatatoProfileuser(_profileModel, addressModel)
           .then((responseModel) {
         if (responseModel.isSuccess) {
           Get.back();
@@ -275,23 +301,64 @@ class ProfileUserController extends GetxController implements GetxService {
           "officeaddress in SaveAddresstoProfileuser in office $officeaddress");
       presentpositionaddress =
           profileUserControllerdata[4]["presentpositionaddress"];
-      presentpositionaddress['latitude'] =
-          presentpositionaddress['latitude'].toString();
-      presentpositionaddress['longitude'] =
-          presentpositionaddress['longitude'].toString();
+      presentpositionaddress['latitude'] = presentpositionaddress['latitude'];
+      presentpositionaddress['longitude'] = presentpositionaddress['longitude'];
       print("presentpositionaddress in office $presentpositionaddress");
       print(homeaddress.runtimeType);
       _profileModel = ProfileModel(
-        user: user,
+        user: UserModel(
+            userId: user["user_id"],
+            username: user["username"],
+            firstname: user["firstname"],
+            lastname: user["lastname"],
+            email: user["email"]),
         phone: phone["phone"],
-        homeaddress: homeaddress,
-        officeaddress: officeaddress,
-        presentpositionaddress: presentpositionaddress,
+        homeaddress: HomeaddressModel(
+          homeaddressId: homeaddress["homeaddress_id"],
+          latitude: homeaddress["latitude"].toString(),
+          longitude: homeaddress["longitude"].toString(),
+          addressname: homeaddress["addressname"],
+          address: homeaddress["address"],
+          tombon: homeaddress["tombon"],
+          amphure: homeaddress["amphure"],
+          province: homeaddress["province"],
+          city: homeaddress["city"],
+          zipCode: homeaddress["zip_code"],
+          typeId: homeaddress["type_Id"],
+        ),
+        officeaddress: OfficeaddressModel(
+          officeaddressId: officeaddress["officeaddress_id"],
+          latitude: officeaddress["latitude"].toString(),
+          longitude: officeaddress["longitude"].toString(),
+          addressname: officeaddress["addressname"],
+          address: officeaddress["address"],
+          tombon: homeaddress["tombon"],
+          amphure: officeaddress["amphure"],
+          province: homeaddress["province"],
+          city: officeaddress["city"],
+          zipCode: officeaddress["zip_code"],
+          typeId: officeaddress["type_Id"],
+        ),
+        presentpositionaddress: PresentpositionaddressModel(
+          presentpositionaddressId:
+              presentpositionaddress["presentpositionaddress_id"],
+          latitude: presentpositionaddress["latitude"].toString(),
+          longitude: presentpositionaddress["longitude"].toString(),
+          addressname: presentpositionaddress["addressname"],
+          address: presentpositionaddress["address"],
+          tombon: presentpositionaddress["tombon"],
+          amphure: presentpositionaddress["amphure"],
+          province: presentpositionaddress["province"],
+          city: presentpositionaddress["city"],
+          zipCode: presentpositionaddress["zip_code"],
+          typeId: presentpositionaddress["type_Id"],
+        ),
         orderCount: orderCount['orderCount'] ?? 0,
         typeId: 4,
       );
+
       Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel)
+          .addDatatoProfileuser(_profileModel, addressModel)
           .then((responseModel) {
         if (responseModel.isSuccess) {
           Get.back();
@@ -338,16 +405,59 @@ class ProfileUserController extends GetxController implements GetxService {
       print(
           "presentpositionaddress in SaveAddresstoProfileuser in other $presentpositionaddress");
       _profileModel = ProfileModel(
-        user: user,
+        user: UserModel(
+            userId: user["user_id"],
+            username: user["username"],
+            firstname: user["firstname"],
+            lastname: user["lastname"],
+            email: user["email"]),
         phone: phone["phone"],
-        homeaddress: homeaddress,
-        officeaddress: officeaddress,
-        presentpositionaddress: presentpositionaddress,
+        homeaddress: HomeaddressModel(
+          homeaddressId: homeaddress["homeaddress_id"],
+          latitude: homeaddress["latitude"].toString(),
+          longitude: homeaddress["longitude"].toString(),
+          addressname: homeaddress["addressname"],
+          address: homeaddress["address"],
+          tombon: homeaddress["tombon"],
+          amphure: homeaddress["amphure"],
+          province: homeaddress["province"],
+          city: homeaddress["city"],
+          zipCode: homeaddress["zip_code"],
+          typeId: homeaddress["type_Id"],
+        ),
+        officeaddress: OfficeaddressModel(
+          officeaddressId: officeaddress["officeaddress_id"],
+          latitude: officeaddress["latitude"].toString(),
+          longitude: officeaddress["longitude"].toString(),
+          addressname: officeaddress["addressname"],
+          address: officeaddress["address"],
+          tombon: officeaddress["tombon"],
+          amphure: officeaddress["amphure"],
+          province: officeaddress["province"],
+          city: officeaddress["city"],
+          zipCode: officeaddress["zip_code"],
+          typeId: officeaddress["type_Id"],
+        ),
+        presentpositionaddress: PresentpositionaddressModel(
+          presentpositionaddressId:
+              presentpositionaddress["presentpositionaddress_id"],
+          latitude: presentpositionaddress["latitude"].toString(),
+          longitude: homeaddress["longitude"].toString(),
+          addressname: presentpositionaddress["addressname"],
+          address: presentpositionaddress["address"],
+          tombon: presentpositionaddress["tombon"],
+          amphure: presentpositionaddress["amphure"],
+          province: presentpositionaddress["province"],
+          city: presentpositionaddress["city"],
+          zipCode: presentpositionaddress["zip_code"],
+          typeId: presentpositionaddress["type_Id"],
+        ),
         orderCount: orderCount['orderCount'] ?? 0,
         typeId: 4,
       );
+
       Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel)
+          .addDatatoProfileuser(_profileModel, addressModel)
           .then((response) {
         if (response.isSuccess) {
           Get.back();

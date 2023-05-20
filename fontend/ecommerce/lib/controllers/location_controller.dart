@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:ecommerce/data/repository/location_repo.dart';
+import 'package:ecommerce/model/Profileusermodel.dart';
 import 'package:ecommerce/model/address_model.dart';
-import 'package:ecommerce/model/profile_model.dart';
+import 'package:ecommerce/model/positiontoMapModel.dart';
+import 'package:ecommerce/model/profile_stringModel.dart';
 import 'package:ecommerce/model/response_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,9 +21,10 @@ class LocationController extends GetxController implements GetxService {
   Placemark _pickPlacemark = Placemark();
   Placemark get placemark => _placemark;
   Placemark get pickplacemark => _pickPlacemark;
-  List<ProfileModel> _addressList = [];
-  List<ProfileModel> get addressList => _addressList;
-  late List<ProfileModel> _allAddressList;
+  List<ProfileuserModel> _addressList = [];
+  List<ProfileuserModel> get addressList => _addressList;
+  late List<ProfileuserModel> _allAddressList;
+  List<ProfileuserModel> get allAddressList => _allAddressList;
   final List<String> _addressTypeList = ["home", "office", "other"];
   List<String> get addressTypeList => _addressTypeList;
   int _addressTypeIndex = 0;
@@ -86,6 +89,8 @@ class LocationController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _address =
           response.body["fulladdress"][0]['formatted_address'].toString();
+      print(response.body["fulladdress"][0]['formatted_address'].runtimeType);
+      print(response.body);
       print("printing address $_address");
     } else {
       print("ไม่สามารถเชื่อต่อ API ได้");
@@ -94,17 +99,21 @@ class LocationController extends GetxController implements GetxService {
   }
 
   late Map<String, dynamic> _getAddress;
-  Map get getAddress => _getAddress;
-
+  Map<String, dynamic> get getAddress => _getAddress;
   ProfileModel getUserAddress() {
     late ProfileModel _profileModel;
+    print("locationRepo.getUserAddress() is ");
+    print("jsonEncode(locationRepo.getUserAddress())");
+    print(jsonDecode(locationRepo.getUserAddress()));
     _getAddress = jsonDecode(locationRepo.getUserAddress());
-    print("_getAddress in getUserAddress : ${_getAddress}");
+
+    print("_getAddress['latitude'] :${_getAddress["latitude"]}");
+
     try {
       _profileModel =
           ProfileModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
-      _addressList.addAll({_profileModel!.homeaddress!["addressname"]});
-      print("_profileModel in getUserAddress : ${_profileModel.user}");
+      print("_profileModel");
+      print(_profileModel);
     } catch (e) {
       print("e in getUserAddress :${e}");
     }
@@ -119,21 +128,69 @@ class LocationController extends GetxController implements GetxService {
   List<dynamic> _getAddressList = [];
   List<dynamic> get getAddressList => _getAddressList;
 
-  Future<ResponseModel> addDatatoProfileuser(ProfileModel profileModel) async {
+  Future<ResponseModel> addDatatoProfileuser(
+      ProfileModel profileModel, AddressModel addressModel) async {
     _loading = true;
     update();
+    print(
+        "profileuserModel.toJson() in addDatatoProfileuser  : ${profileModel.toJson()}");
     Response response = await locationRepo.addDatatoProfileuser(profileModel);
+    print("addDatatoProfileuser");
+    print("response.statusCode in addDatatoProfileuser${response.statusCode}");
+    print("response.body in addDatatoProfileuser${response.body}");
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      print(response.body);
-      String message = response.body["msg"];
+      getaddressList();
+      print("response.body in addDatatoProfileuser : ${response.body}");
+
+      String message = response.body["msg"].toString();
       responseModel = ResponseModel(true, message);
-      print("message");
+
+      print(message);
+      await adduseraddress(addressModel);
     } else {
       print("ไม่สามารถบันทึกข้อมูลได้ค่ะ");
+      print(response.body);
       responseModel = ResponseModel(false, response.statusText!);
     }
     update();
     return responseModel;
+  }
+
+  Future<ResponseModel> getaddressList() async {
+    Response response = await locationRepo.getProfileUserList();
+    print("response.body in getaddressList : ${response.body} ");
+    print(
+        "response.body.RuntimeType in getaddressList : ${response.body.runtimeType} ");
+    ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      _addressList = [];
+      _allAddressList = [];
+
+      response.body.forEach((element) {
+        print("element in getaddressList locationController ");
+        print(element);
+        _addressList.add(ProfileuserModel.fromJson(element));
+        _allAddressList.add(ProfileuserModel.fromJson(element));
+
+        print("_addressList : ${_addressList}");
+        print("_allAddressList : ${_allAddressList}");
+      });
+
+      responseModel =
+          ResponseModel(true, "มี _addressList และ _allAddressList");
+    } else {
+      _addressList = [];
+      _allAddressList = [];
+      responseModel = ResponseModel(false, "${response.statusCode}");
+    }
+
+    update();
+    return responseModel;
+  }
+
+  Future<bool> adduseraddress(AddressModel addressModel) async {
+    String userAddress = jsonEncode(addressModel.toJson());
+    return await locationRepo.adduseraddress(userAddress);
   }
 }

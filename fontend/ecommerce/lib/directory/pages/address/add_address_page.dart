@@ -4,6 +4,7 @@ import 'package:ecommerce/controllers/profile_controlle.dart';
 import 'package:ecommerce/directory/pages/address/address_widget.dart';
 import 'package:ecommerce/directory/pages/sign_up/sigh_up_widget.dart';
 import 'package:ecommerce/directory/pages/sign_up/sign_up_width.dart';
+import 'package:ecommerce/model/address_model.dart';
 import 'package:ecommerce/model/profile_model.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
@@ -37,28 +38,58 @@ class _AddAddressPageState extends State<AddAddressPage> {
   void initState() {
     super.initState();
     _isLogged = Get.find<AuthController>().userLoggedIn();
-    if (_isLogged && Get.find<ProfileUserController>().profileModel == null) {
+    if (_isLogged &&
+        Get.find<ProfileUserController>().profileiserModel == null) {
       Get.find<ProfileUserController>().getProfileUserList();
     }
     if (Get.find<LocationController>().addressList.isNotEmpty) {
+      print("addressList ไม่เป็น ลิสต์ว่าง");
+      Get.find<LocationController>().getUserAddress();
+      print("Get.find<LocationController>().getAddress");
+      // print(
+      //     Get.find<LocationController>().getAddress["homeaddress"]["latitude"]);
+      // print(Get.find<LocationController>()
+      //     .getAddress["homeaddress"]["latitude"]
+      //     .runtimeType);
+
+      // double latitude = double.parse(
+      //     Get.find<LocationController>().getAddress["homeaddress"]["latitude"]);
+      // if (Get.find<LocationController>().getAddress["homeaddress"]
+      //         ["latitude"] !=
+      //     null) {
+      //   late double latitude = double.parse(Get.find<LocationController>()
+      //       .getAddress["homeaddress"]["latitude"]);
+      // } else {
+      //   late double latitude = 0;
+      // }
+
+      //double longitude = double.parse(Get.find<LocationController>()
+      //.getAddress["homeaddress"]["longitude"]);
+      // if (Get.find<LocationController>().getAddress["homeaddress"]
+      //         ["longitude"] !=
+      //     null) {
+      //   late double latitude = double.parse(Get.find<LocationController>()
+      //       .getAddress["homeaddress"]["longitude"]);
+      // } else {
+      //   late double longitude = 0;
+      // }
+      // print(LatLng(
+      //         double.parse(Get.find<LocationController>()
+      //             .getAddress["homeaddress"]["latitude"]),
+      //         double.parse(Get.find<LocationController>()
+      //             .getAddress["homeaddress"]["longitude"]))
+      //     .runtimeType);
+
       _cameraPosition = CameraPosition(
-        target: LatLng(
-            double.parse(Get.find<LocationController>().getAddress["latitude"]),
-            double.parse(
-                Get.find<LocationController>().getAddress["longitude"])),
-      );
+          target: LatLng(
+              double.parse(
+                  Get.find<LocationController>().getAddress["latitude"]),
+              double.parse(
+                  Get.find<LocationController>().getAddress["longitude"])));
       _initialPosition = LatLng(
           double.parse(Get.find<LocationController>().getAddress["latitude"]),
           double.parse(Get.find<LocationController>().getAddress["longitude"]));
     }
-  }
-
-  void SaveAddresstoProfileuser() {
-    Get.find<ProfileUserController>().SaveAddresstoProfileuser(
-        _firstnamecontactController.text,
-        _lastnamecontactController.text,
-        _contactPersonalNumber.text,
-        _addressController.text);
   }
 
   @override
@@ -74,19 +105,19 @@ class _AddAddressPageState extends State<AddAddressPage> {
         backgroundColor: AppColors.mainColor,
       ),
       body: GetBuilder<ProfileUserController>(builder: (profilecontroller) {
-        if (profilecontroller.profileModel != null &&
+        if (profilecontroller.profileiserModel != null &&
             _firstnamecontactController.text.isEmpty) {
           print("profilecontroller in AddAddressPage${profilecontroller}");
-          var datacontroller = profilecontroller.profileModel;
+          var datacontroller = profilecontroller.profileiserModel;
 
-          var usercontroller = profilecontroller.profileModel!;
-          _firstnamecontactController.text = usercontroller.user!["firstname"];
-          _lastnamecontactController.text = usercontroller.user!["lastname"];
+          var usercontroller = profilecontroller.profileiserModel!;
+          _firstnamecontactController.text = usercontroller.user!.firstname!;
+          _lastnamecontactController.text = usercontroller.user!.lastname!;
           _contactPersonalNumber.text = "${datacontroller!.phone}";
           if (Get.find<LocationController>().addressList.isNotEmpty) {
-            _addressController.text = Get.find<LocationController>()
-                .getUserAddress()
-                .user![0]["firstname"];
+            _addressController.text =
+                Get.find<LocationController>().getAddress["address"];
+            print(_addressController.text);
             print("addressList.isNotEmpty");
           }
         }
@@ -278,8 +309,25 @@ class _AddAddressPageState extends State<AddAddressPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      SaveAddresstoProfileuser();
-                      print("tap");
+                      AddressModel addressModel = AddressModel(
+                        addressType: locationcontroller.addressTypeList[
+                            locationcontroller.addressTypeIndex],
+                        contactPersonalName:
+                            "${_firstnamecontactController.text} ${_lastnamecontactController.text}",
+                        contactPersonalNumber: _contactPersonalNumber.text,
+                        address: _addressController.text,
+                        latitude:
+                            locationcontroller.position.latitude.toString(),
+                        longitude:
+                            locationcontroller.position.longitude.toString(),
+                      );
+                      Get.find<ProfileUserController>()
+                          .SaveAddresstoProfileuser(
+                              _firstnamecontactController.text,
+                              _lastnamecontactController.text,
+                              _contactPersonalNumber.text,
+                              _addressController.text,
+                              addressModel);
                     },
                     child: Container(
                       margin: EdgeInsets.only(

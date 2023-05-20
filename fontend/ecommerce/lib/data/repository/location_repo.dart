@@ -1,11 +1,9 @@
 import 'package:ecommerce/data/api/api_client.dart';
-import 'package:ecommerce/model/address_model.dart';
+import 'package:ecommerce/model/profile_stringModel.dart';
 import 'package:ecommerce/util/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../model/profile_model.dart';
 
 class LocationRepo {
   ApiClient apiClient;
@@ -25,13 +23,24 @@ class LocationRepo {
   }
 
   String getUserAddress() {
-    print(
-        "sharedPreferences.getString(AppConstants.PROFILE_USERDATA)  : ${sharedPreferences.getString(AppConstants.PROFILE_USERDATA)}");
     return sharedPreferences.getString(AppConstants.PROFILE_USERDATA) ?? "";
   }
 
   Future<Response> addDatatoProfileuser(ProfileModel profileModel) async {
+    print(
+        "profileuserModel.toJson() in addDatatoProfileuser  : ${profileModel.toJson()}");
+    apiClient.updateHeader(sharedPreferences.getString(AppConstants.TOKEN)!);
     return await apiClient.putData(
         AppConstants.ADD_USER_ADDRESS, profileModel.toJson());
+  }
+
+  Future<bool> adduseraddress(String address) async {
+    apiClient.updateHeader(sharedPreferences.getString(AppConstants.TOKEN)!);
+    return await sharedPreferences.setString(
+        AppConstants.PROFILE_USERDATA, address);
+  }
+
+  Future<Response> getProfileUserList() async {
+    return await apiClient.getData(AppConstants.PROFILE_URL);
   }
 }

@@ -117,27 +117,31 @@ class SignInPage extends StatelessWidget {
                         Icontext: Icons.password_outlined,
                       ),
                       DimensionheightWidget(context, 15),
-                      GestureDetector(
-                        onTap: () {
-                          _loginuser(_authController);
-                        },
-                        child: Center(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                top: DimensionStaticHeight(context, 20),
-                                bottom: DimensionStaticHeight(context, 20),
-                                left: DimensionStaticWidth(context, 20),
-                                right: DimensionStaticWidth(context, 20)),
-                            // ignore: sort_child_properties_last
-                            child: BigText(
-                              text: "ล็อกอิน",
-                              color: Colors.white,
-                              size: DimensionStaticHeight(context, 18),
+                      AnimatedContainer(
+                        duration: Duration(seconds: 2),
+                        curve: Curves.easeIn,
+                        child: GestureDetector(
+                          onTap: () {
+                            _loginuser(_authController);
+                          },
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: DimensionStaticHeight(context, 20),
+                                  bottom: DimensionStaticHeight(context, 20),
+                                  left: DimensionStaticWidth(context, 20),
+                                  right: DimensionStaticWidth(context, 20)),
+                              // ignore: sort_child_properties_last
+                              child: BigText(
+                                text: "ล็อกอิน",
+                                color: Colors.white,
+                                size: DimensionStaticHeight(context, 18),
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      DimensionStaticHeight(context, 20)),
+                                  color: AppColors.mainColor),
                             ),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    DimensionStaticHeight(context, 20)),
-                                color: AppColors.mainColor),
                           ),
                         ),
                       ),

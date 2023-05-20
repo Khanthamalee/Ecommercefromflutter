@@ -1,7 +1,6 @@
 import 'package:ecommerce/data/repository/cart_repo.dart';
 import 'package:ecommerce/model/cart_model.dart';
 import 'package:ecommerce/model/product_models.dart';
-import 'package:ecommerce/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';

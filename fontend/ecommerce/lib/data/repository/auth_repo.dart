@@ -39,11 +39,15 @@ class AuthRepo {
     //API ที่เราใช้ ต้องใช้ Token ในการ permission เข้าถึงข้อมูล ดังนั้นเลยบันทึก Token เพื่อใช้ในการ get ข้อมูล
     apiClient.token = response.body['token'];
     apiClient.updateHeader(response.body['token']);
+
     print("loginData.toJson()['username']:${loginData.toJson()['username']}");
     print("loginData.toJson()['password']:${loginData.toJson()['password']}");
 
     saveUserusernameAndPasswordToAppConstants(
         "${response.body['username']}", "${response.body['password']}");
+
+    await sharedPreferences.setString(
+        AppConstants.TOKEN, response.body['token']);
 
     return response;
   }

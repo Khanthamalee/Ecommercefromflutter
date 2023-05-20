@@ -38,10 +38,11 @@ class AccountPage extends StatelessWidget {
           backgroundColor: AppColors.mainColor),
       body: GetBuilder<ProfileUserController>(builder: (controller) {
         print(
-            "controller.profileuserProductList :${controller.profileModel!.user}");
-        var datacontroller = controller.profileModel!;
-        var usercontroller = datacontroller.user!;
-        var addresscontroller = datacontroller.homeaddress!['addressname'];
+            "controller!.profileiserModel!.user :${controller!.profileiserModel!.user}");
+        var datacontroller = controller.profileiserModel!;
+        var usercontroller = datacontroller.user;
+        var addresscontroller = datacontroller.homeaddress;
+        print("addresscontroller :${addresscontroller!.addressname!}");
         return _userLoggedIn
             ? (controller.isLoading
                 ? SingleChildScrollView(
@@ -66,7 +67,7 @@ class AccountPage extends StatelessWidget {
                           DimensionheightWidget(context, 10),
                           AccountWidget(
                             text:
-                                "${usercontroller["firstname"]}  ${usercontroller["lastname"]}",
+                                "${usercontroller!.firstname}  ${usercontroller!.lastname}",
                             iconColor: Colors.white,
                             bgiconColor: AppColors.mainColor,
                             icon: Icons.person_outline_outlined,
@@ -80,7 +81,7 @@ class AccountPage extends StatelessWidget {
                           ),
                           DimensionheightWidget(context, 10),
                           AccountWidget(
-                            text: "${usercontroller["email"]}",
+                            text: "${usercontroller.email}",
                             iconColor: Colors.white,
                             bgiconColor: Colors.blueAccent,
                             icon: Icons.email_outlined,
@@ -91,7 +92,7 @@ class AccountPage extends StatelessWidget {
                               Get.toNamed(RounteHelper.addAddressPage);
                             },
                             child: AccountWidget(
-                              text: addresscontroller,
+                              text: addresscontroller!.addressname!,
                               iconColor: Colors.white,
                               bgiconColor: Color(0xFFfcab88),
                               icon: Icons.location_on_outlined,
@@ -140,12 +141,13 @@ class AccountPage extends StatelessWidget {
                               children: [
                                 Container(
                                   child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: BigText(
-                                        text: "แก้ไขโปรไฟล์",
-                                        size: 12,
-                                        color: Colors.black45,
-                                      )),
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: BigText(
+                                      text: "แก้ไขโปรไฟล์",
+                                      size: 12,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
                                   color: Colors.white60,
                                 ),
                               ],
@@ -155,7 +157,7 @@ class AccountPage extends StatelessWidget {
                       ),
                     ]),
                   )
-                : CustomLoading())
+                : const CustomLoading())
             : Container(
                 child: Center(
                   child: Column(
@@ -163,14 +165,14 @@ class AccountPage extends StatelessWidget {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: DimensionStaticHeight(context, 20 * 8),
+                        height: DimensionStaticHeight(context, 360),
                         margin: EdgeInsets.only(
                             left: DimensionStaticWidth(context, 20),
                             right: DimensionStaticWidth(context, 20)),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                                 DimensionStaticHeight(context, 20)),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 fit: BoxFit.fill,
                                 image: AssetImage(
                                     "assets/image_icon_app/logo.png"))),
@@ -181,7 +183,7 @@ class AccountPage extends StatelessWidget {
                         },
                         child: Container(
                           width: double.infinity,
-                          height: DimensionStaticHeight(context, 20 * 5),
+                          height: DimensionStaticHeight(context, 20 * 4),
                           margin: EdgeInsets.only(
                               left: DimensionStaticWidth(context, 20),
                               right: DimensionStaticWidth(context, 20)),
@@ -190,10 +192,12 @@ class AccountPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(
                                 DimensionStaticHeight(context, 20)),
                           ),
-                          child: BigText(
-                            text: "กรุณาเข้าสู่ระบบ",
-                            color: Colors.white,
-                            size: DimensionStaticHeight(context, 20),
+                          child: Center(
+                            child: BigText(
+                              text: "เข้าสู่ระบบคลิก",
+                              color: Colors.white,
+                              size: DimensionStaticHeight(context, 20),
+                            ),
                           ),
                         ),
                       ),

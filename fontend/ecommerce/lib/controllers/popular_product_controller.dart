@@ -4,7 +4,6 @@ import 'package:ecommerce/controllers/car_controller.dart';
 import 'package:ecommerce/data/repository/popular_product_repo.dart';
 import 'package:ecommerce/model/cart_model.dart';
 import 'package:ecommerce/model/product_models.dart';
-import 'package:ecommerce/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
