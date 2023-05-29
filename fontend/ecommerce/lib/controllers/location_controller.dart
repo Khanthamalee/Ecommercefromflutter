@@ -99,7 +99,7 @@ class LocationController extends GetxController implements GetxService {
   }
 
   late Map<String, dynamic> _getAddress;
-  Map<String, dynamic> get getAddress => _getAddress;
+  Map get getAddress => _getAddress;
   ProfileModel getUserAddress() {
     late ProfileModel _profileModel;
     print("locationRepo.getUserAddress() is ");
@@ -192,5 +192,11 @@ class LocationController extends GetxController implements GetxService {
   Future<bool> adduseraddress(AddressModel addressModel) async {
     String userAddress = jsonEncode(addressModel.toJson());
     return await locationRepo.adduseraddress(userAddress);
+  }
+
+  void removedProfileUserData() {
+    _addressList = [];
+    locationRepo.removedProfileUserData();
+    update();
   }
 }

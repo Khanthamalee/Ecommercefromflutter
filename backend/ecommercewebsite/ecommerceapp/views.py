@@ -171,7 +171,6 @@ class PostAndPutprofile(APIView):
             print(location)
 
             try:
-
                 Location1_object = Location1.objects.get(id = homeaddress_id )
                 Location1_object.addressname = addressname
                 Location1_object.address =address
@@ -185,7 +184,7 @@ class PostAndPutprofile(APIView):
                 Location1_object.location = location
                 Location1_object.type_id = 3
                 Location1_object.save()
-                messagelist = append("Homeaddress ProfileData saved")
+                messagelist.append("Homeaddress ProfileData saved")
 
 
             except:

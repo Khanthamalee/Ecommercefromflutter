@@ -17,16 +17,16 @@ class ProfileuserModel {
       this.typeId});
 
   ProfileuserModel.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = User.fromJson(json['user']);
     phone = json['phone'];
     homeaddress = json['homeaddress'] != null
-        ? new Homeaddress.fromJson(json['homeaddress'])
+        ? Homeaddress.fromJson(json['homeaddress'])
         : null;
     officeaddress = json['officeaddress'] != null
-        ? new Officeaddress.fromJson(json['officeaddress'])
+        ? Officeaddress.fromJson(json['officeaddress'])
         : null;
     presentpositionaddress = json['presentpositionaddress'] != null
-        ? new Presentpositionaddress.fromJson(json['presentpositionaddress'])
+        ? Presentpositionaddress.fromJson(json['presentpositionaddress'])
         : null;
     orderCount = json['order_count'];
     typeId = json['type_id'];

@@ -5,7 +5,8 @@ class AppConstants {
   //url
   //static const String BASE_URL = "http://mvs.bslmeiyu.com";
   //static const String BASE_URL = "https://raw.githubusercontent.com";
-  static const String BASE_URL = "https://ad3a-27-145-141-14.ngrok-free.app/";
+  static const String BASE_URL =
+      "https://39f7-2001-fb1-142-eb29-c7bf-5da7-780c-cb4e.ngrok-free.app/";
 
   //static const String POPULAR_PODUCT_URI = "/api/v1/products/popular";
   //static const String POPULAR_PODUCT_URI =

@@ -39,46 +39,14 @@ class _AddAddressPageState extends State<AddAddressPage> {
     super.initState();
     _isLogged = Get.find<AuthController>().userLoggedIn();
     if (_isLogged &&
-        Get.find<ProfileUserController>().profileiserModel == null) {
+        Get.find<ProfileUserController>().profileuserProductList.isEmpty) {
+      print("ทำgetProfileUserList()");
       Get.find<ProfileUserController>().getProfileUserList();
     }
     if (Get.find<LocationController>().addressList.isNotEmpty) {
       print("addressList ไม่เป็น ลิสต์ว่าง");
       Get.find<LocationController>().getUserAddress();
       print("Get.find<LocationController>().getAddress");
-      // print(
-      //     Get.find<LocationController>().getAddress["homeaddress"]["latitude"]);
-      // print(Get.find<LocationController>()
-      //     .getAddress["homeaddress"]["latitude"]
-      //     .runtimeType);
-
-      // double latitude = double.parse(
-      //     Get.find<LocationController>().getAddress["homeaddress"]["latitude"]);
-      // if (Get.find<LocationController>().getAddress["homeaddress"]
-      //         ["latitude"] !=
-      //     null) {
-      //   late double latitude = double.parse(Get.find<LocationController>()
-      //       .getAddress["homeaddress"]["latitude"]);
-      // } else {
-      //   late double latitude = 0;
-      // }
-
-      //double longitude = double.parse(Get.find<LocationController>()
-      //.getAddress["homeaddress"]["longitude"]);
-      // if (Get.find<LocationController>().getAddress["homeaddress"]
-      //         ["longitude"] !=
-      //     null) {
-      //   late double latitude = double.parse(Get.find<LocationController>()
-      //       .getAddress["homeaddress"]["longitude"]);
-      // } else {
-      //   late double longitude = 0;
-      // }
-      // print(LatLng(
-      //         double.parse(Get.find<LocationController>()
-      //             .getAddress["homeaddress"]["latitude"]),
-      //         double.parse(Get.find<LocationController>()
-      //             .getAddress["homeaddress"]["longitude"]))
-      //     .runtimeType);
 
       _cameraPosition = CameraPosition(
           target: LatLng(
@@ -105,15 +73,16 @@ class _AddAddressPageState extends State<AddAddressPage> {
         backgroundColor: AppColors.mainColor,
       ),
       body: GetBuilder<ProfileUserController>(builder: (profilecontroller) {
-        if (profilecontroller.profileiserModel != null &&
+        if (profilecontroller.profileuserProductList.isNotEmpty &
             _firstnamecontactController.text.isEmpty) {
           print("profilecontroller in AddAddressPage${profilecontroller}");
-          var datacontroller = profilecontroller.profileiserModel;
+          var datacontroller = profilecontroller.profileuserProductList;
 
-          var usercontroller = profilecontroller.profileiserModel!;
-          _firstnamecontactController.text = usercontroller.user!.firstname!;
-          _lastnamecontactController.text = usercontroller.user!.lastname!;
-          _contactPersonalNumber.text = "${datacontroller!.phone}";
+          var usercontroller =
+              profilecontroller.profileuserProductList[0]["user"];
+          _firstnamecontactController.text = usercontroller["firstname"];
+          _lastnamecontactController.text = usercontroller["lastname"];
+          _contactPersonalNumber.text = datacontroller[1]["phone"];
           if (Get.find<LocationController>().addressList.isNotEmpty) {
             _addressController.text =
                 Get.find<LocationController>().getAddress["address"];
@@ -134,7 +103,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 190,
+                  height: 180,
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
                   decoration: BoxDecoration(

@@ -43,4 +43,8 @@ class LocationRepo {
   Future<Response> getProfileUserList() async {
     return await apiClient.getData(AppConstants.PROFILE_URL);
   }
+
+  void removedProfileUserData() {
+    sharedPreferences.remove(AppConstants.PROFILE_USERDATA);
+  }
 }

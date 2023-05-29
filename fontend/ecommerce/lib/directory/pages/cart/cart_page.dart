@@ -370,9 +370,10 @@ class CartPage extends StatelessWidget {
                             if (Get.find<LocationController>()
                                 .addressList
                                 .isEmpty) {
-                              print("tap");
-                              Get.back();
+                              //Get.back();
                               Get.toNamed(RounteHelper.getAddAddressPage());
+                              print(Get.find<LocationController>().addressList);
+                              print("addressListisEmpty");
                             } else {
                               cartcontroller.addToHistory();
                             }

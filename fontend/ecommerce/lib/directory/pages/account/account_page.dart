@@ -1,6 +1,7 @@
 import 'package:ecommerce/base/cuatom_loading.dart';
 import 'package:ecommerce/controllers/auth_controller.dart';
 import 'package:ecommerce/controllers/car_controller.dart';
+import 'package:ecommerce/controllers/location_controller.dart';
 import 'package:ecommerce/controllers/profile_controlle.dart';
 import 'package:ecommerce/directory/pages/account/account_widget.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
@@ -37,12 +38,38 @@ class AccountPage extends StatelessWidget {
           ),
           backgroundColor: AppColors.mainColor),
       body: GetBuilder<ProfileUserController>(builder: (controller) {
+        // print(
+        //     "controller!.profileiserModel!.user :${controller.profileiserModel!.user!.username}");
+
         print(
-            "controller!.profileiserModel!.user :${controller!.profileiserModel!.user}");
-        var datacontroller = controller.profileiserModel!;
-        var usercontroller = datacontroller.user;
-        var addresscontroller = datacontroller.homeaddress;
-        print("addresscontroller :${addresscontroller!.addressname!}");
+            "profilecontroller in AccountPage : ${controller.profileuserProductList}");
+        var datacontroller = controller.profileuserProductList;
+
+        var usercontroller = datacontroller[0]["user"];
+        print("usercontroller : ${usercontroller}");
+        print("datacontroller[1]['phone'] : ${datacontroller[1]["phone"]}");
+
+        var addresscontroller = datacontroller[2]["homeaddress"]["addressname"];
+        print("addressname : ${addresscontroller}");
+
+        if (_userLoggedIn) {
+          if (Get.find<LocationController>().addressList.isEmpty) {
+            print("addressList.isEmpty");
+            addresscontroller = datacontroller[2]["homeaddress"]["addressname"];
+          } else if (Get.find<LocationController>().addressList.isNotEmpty) {
+            Get.find<LocationController>().getUserAddress();
+            print("addressList.isNotEmpty");
+            print(MediaQuery.of(context).size.width);
+            print(MediaQuery.of(context).size.height);
+            addresscontroller =
+                Get.find<LocationController>().getAddress["address"];
+            print("addresscontroller in addressList :${addresscontroller}");
+          } else {
+            addresscontroller = datacontroller[2]["homeaddress"]["addressname"];
+          }
+        }
+
+        print("addresscontroller after addressList :${addresscontroller}");
         return _userLoggedIn
             ? (controller.isLoading
                 ? SingleChildScrollView(
@@ -67,21 +94,21 @@ class AccountPage extends StatelessWidget {
                           DimensionheightWidget(context, 10),
                           AccountWidget(
                             text:
-                                "${usercontroller!.firstname}  ${usercontroller!.lastname}",
+                                "${usercontroller["firstname"]}  ${usercontroller["lastname"]}",
                             iconColor: Colors.white,
                             bgiconColor: AppColors.mainColor,
                             icon: Icons.person_outline_outlined,
                           ),
                           DimensionheightWidget(context, 10),
                           AccountWidget(
-                            text: "${datacontroller.phone}",
+                            text: "${datacontroller[1]["phone"]}",
                             iconColor: Colors.white,
                             bgiconColor: Colors.lightGreenAccent.shade700,
                             icon: Icons.phone_bluetooth_speaker_outlined,
                           ),
                           DimensionheightWidget(context, 10),
                           AccountWidget(
-                            text: "${usercontroller.email}",
+                            text: "${usercontroller["email"]}",
                             iconColor: Colors.white,
                             bgiconColor: Colors.blueAccent,
                             icon: Icons.email_outlined,
@@ -92,7 +119,7 @@ class AccountPage extends StatelessWidget {
                               Get.toNamed(RounteHelper.addAddressPage);
                             },
                             child: AccountWidget(
-                              text: addresscontroller!.addressname!,
+                              text: addresscontroller,
                               iconColor: Colors.white,
                               bgiconColor: Color(0xFFfcab88),
                               icon: Icons.location_on_outlined,
@@ -102,7 +129,8 @@ class AccountPage extends StatelessWidget {
                           ),
                           DimensionheightWidget(context, 10),
                           AccountWidget(
-                            text: "จำนวน order ${datacontroller.orderCount}",
+                            text:
+                                "จำนวน order ${datacontroller[5]["order_count"]}",
                             iconColor: Colors.white,
                             bgiconColor: Colors.red.shade400,
                             icon: Icons.comment_bank_outlined,
@@ -114,6 +142,8 @@ class AccountPage extends StatelessWidget {
                                 Get.find<AuthController>().userlogout();
                                 Get.find<CartController>().clear();
                                 Get.find<CartController>().clearCartHistory();
+                                Get.find<LocationController>()
+                                    .removedProfileUserData();
                                 Get.toNamed(RounteHelper.getSignInPage());
                               } else {
                                 print('คุณยังไม่เข้าสู่ระบบ');
@@ -141,7 +171,7 @@ class AccountPage extends StatelessWidget {
                               children: [
                                 Container(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(8.0),
                                     child: BigText(
                                       text: "แก้ไขโปรไฟล์",
                                       size: 12,
