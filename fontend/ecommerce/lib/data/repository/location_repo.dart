@@ -1,5 +1,5 @@
 import 'package:ecommerce/data/api/api_client.dart';
-import 'package:ecommerce/model/profile_stringModel.dart';
+import 'package:ecommerce/model/Profileusermodel.dart';
 import 'package:ecommerce/util/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,12 +26,13 @@ class LocationRepo {
     return sharedPreferences.getString(AppConstants.PROFILE_USERDATA) ?? "";
   }
 
-  Future<Response> addDatatoProfileuser(ProfileModel profileModel) async {
+  Future<Response> addDatatoProfileuser(
+      ProfileuserModel profileuserModel) async {
     print(
-        "profileuserModel.toJson() in addDatatoProfileuser  : ${profileModel.toJson()}");
+        "profileuserModel.toJson() in addDatatoProfileuser  : ${profileuserModel.toJson()}");
     apiClient.updateHeader(sharedPreferences.getString(AppConstants.TOKEN)!);
     return await apiClient.putData(
-        AppConstants.ADD_USER_ADDRESS, profileModel.toJson());
+        AppConstants.ADD_USER_ADDRESS, profileuserModel.toJson());
   }
 
   Future<bool> adduseraddress(String address) async {

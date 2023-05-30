@@ -5,7 +5,6 @@ import 'package:ecommerce/directory/pages/address/address_widget.dart';
 import 'package:ecommerce/directory/pages/sign_up/sigh_up_widget.dart';
 import 'package:ecommerce/directory/pages/sign_up/sign_up_width.dart';
 import 'package:ecommerce/model/address_model.dart';
-import 'package:ecommerce/model/profile_model.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
 import 'package:ecommerce/widget/bigtext.dart';

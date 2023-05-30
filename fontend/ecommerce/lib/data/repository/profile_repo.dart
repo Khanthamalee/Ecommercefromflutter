@@ -1,5 +1,4 @@
 import 'package:ecommerce/data/api/api_client.dart';
-import 'package:ecommerce/model/profile_model.dart';
 import 'package:ecommerce/util/app_constants.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:shared_preferences/shared_preferences.dart';

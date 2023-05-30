@@ -83,8 +83,8 @@ class User {
 
 class Homeaddress {
   int? homeaddressId;
-  double? latitude;
-  double? longitude;
+  String? latitude;
+  String? longitude;
   String? addressname;
   String? address;
   String? tombon;
@@ -140,8 +140,8 @@ class Homeaddress {
 
 class Officeaddress {
   int? officeaddressId;
-  double? latitude;
-  double? longitude;
+  String? latitude;
+  String? longitude;
   String? addressname;
   String? address;
   String? tombon;
@@ -197,8 +197,8 @@ class Officeaddress {
 
 class Presentpositionaddress {
   int? presentpositionaddressId;
-  double? latitude;
-  double? longitude;
+  String? latitude;
+  String? longitude;
   String? addressname;
   String? address;
   String? tombon;

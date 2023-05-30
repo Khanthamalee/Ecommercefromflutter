@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ecommerce/data/repository/auth_repo.dart';
 import 'package:ecommerce/model/create_token_model.dart';
 import 'package:ecommerce/model/response_model.dart';
@@ -28,9 +26,9 @@ class AuthController extends GetxController implements GetxService {
       final Map errormessage = Map.from(response.body);
       print("errormessage : ${errormessage}");
       print("errormessage.runtimeType : ${errormessage.runtimeType}");
-      List<dynamic> errormessagelist = [];
+      //List<dynamic> errormessagelist = [];
 
-      List<dynamic?>? usererror = errormessage["username"];
+      List<dynamic>? usererror = errormessage["username"];
       var usererrormessage;
       if (usererror != null) {
         usererrormessage = "เบอร์นี้มีในระบบแล้ว กรุณาใช้เบอร์ใหม่";
@@ -38,7 +36,7 @@ class AuthController extends GetxController implements GetxService {
         usererrormessage = "เบอร์โทรศัพท์ของคุณผ่าน";
       }
 
-      List<dynamic?>? emailerror = errormessage["email"];
+      List<dynamic>? emailerror = errormessage["email"];
       var emailerrormessage;
       if (emailerror != null) {
         emailerrormessage = "อีเมลล์นี้มีในระบบแล้ว กรุณาใช้อีเมลล์ใหม่";
@@ -46,7 +44,7 @@ class AuthController extends GetxController implements GetxService {
         emailerrormessage = "อีเมลล์ของคุณผ่าน";
       }
 
-      List<dynamic?>? passworderror = errormessage["password"];
+      List<dynamic>? passworderror = errormessage["password"];
       var passworderrormessage;
       if (passworderror != null) {
         passworderrormessage = "รหัสต้องมีตัวอักษร ตัวเลข และสัญลัษณ์ค่ะ";
@@ -54,7 +52,6 @@ class AuthController extends GetxController implements GetxService {
         passworderrormessage = "รหัสผ่านของคุณยอดเยี่ยม";
       }
 
-      
       responseModel = ResponseModel(false,
           "${usererrormessage}\n${emailerrormessage}\n${passworderrormessage} ");
       print("false in registration : ${responseModel.message}");
