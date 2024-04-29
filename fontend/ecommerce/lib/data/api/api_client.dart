@@ -43,6 +43,7 @@ class ApiClient extends GetConnect implements GetxService {
     try {
       Response response = await post(uri, body);
       print("uripost : ${uri} , bodypost : ${body}");
+      print(response.body);
 
       return response;
     } catch (e) {

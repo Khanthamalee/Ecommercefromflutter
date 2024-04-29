@@ -60,6 +60,7 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
       child: Column(
         children: [
           GetBuilder<PopularProductController>(builder: (popularProducts) {
+            print("popularProducts : ${popularProducts.popularProductList}");
             return popularProducts.isLoaded
                 ? Container(
                     //color: Colors.redAccent,
@@ -79,6 +80,8 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
           }),
           //dots_indicator
           GetBuilder<PopularProductController>(builder: (popularProducts) {
+            print(
+                "popularProducts.popularProductList : ${popularProducts.popularProductList}");
             return DotsIndicator(
               dotsCount: popularProducts.popularProductList.isEmpty
                   ? 1
@@ -126,18 +129,13 @@ class _GoodsPageBodyState extends State<GoodsPageBody> {
           MyWidgetReccommended(
             token: _token,
           ),
-          //DimensionheightWidget(context, 5),
-          //List of goods and index
-          /*const SizedBox(
-            //height: DimensionStaticHeight(context, 650),
-            child: MyWidgetReccommended(),
-          ),*/
         ],
       ),
     );
   }
 
   Widget _buildPageItem(int index, ProductModel popularProduct) {
+    print(popularProduct.id);
     //ทำอนิเมชันเวลาเลื่อนการ์ด
     Matrix4 matrix = Matrix4.identity();
     if (index == _currPageValue.floor()) {

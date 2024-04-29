@@ -24,17 +24,21 @@ class AuthRepo {
     Response response = await apiClient.postData(
         AppConstants.CREATETOKEN_URL, loginData.toJson());
     print(AppConstants.CREATETOKEN_URL);
+    print("loginData.toJson() : ${loginData.toJson()["username"]}");
     print("response in createtoken : ${response}");
     print("response.body in createtoken : ${response.body}");
     return response;
   }
 
   Future<Response> Loginuser(LoginData loginData, String token) async {
-    Response response =
-        await apiClient.postData(AppConstants.LOGIN_URL, loginData.toJson());
+    Response response = await apiClient.postData(AppConstants.LOGIN_URL, {
+      "username": loginData.toJson()["username"].toString(),
+      "password": loginData.toJson()["password"].toString()
+    });
+
     print("AppConstants.LOGIN_URL : ${AppConstants.LOGIN_URL}");
     print("loginData.toJson() : ${loginData.toJson()}");
-    print("response.body['token'] : ${response.body['token']}");
+    print("response.body : ${response.body['token']}");
 
     //API ที่เราใช้ ต้องใช้ Token ในการ permission เข้าถึงข้อมูล ดังนั้นเลยบันทึก Token เพื่อใช้ในการ get ข้อมูล
     apiClient.token = response.body['token'];

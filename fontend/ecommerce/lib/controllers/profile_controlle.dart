@@ -2,11 +2,8 @@ import 'package:ecommerce/controllers/location_controller.dart';
 import 'package:ecommerce/data/repository/profile_repo.dart';
 import 'package:ecommerce/model/Profileusermodel.dart';
 import 'package:ecommerce/model/address_model.dart';
-import 'package:ecommerce/model/positiontoMapModel.dart';
-import 'package:ecommerce/model/profile_stringModel.dart';
 import 'package:ecommerce/model/response_model.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class ProfileUserController extends GetxController implements GetxService {
@@ -50,11 +47,21 @@ class ProfileUserController extends GetxController implements GetxService {
       var phone = response.body[0]['phone'];
 
       Map<String, dynamic> homeaddress = response.body[0]['homeaddress'];
+      List<String> TAddress = [
+        "homeaddress_id",
+        "latitude",
+        "longitude",
+        "addressname",
+        "tombon",
+        "amphure",
+        "city",
+        "zip_code"
+      ];
       if (homeaddress["homeaddress_id"] == '') {
         homeaddress = response.body[0]['homeaddress'];
-        homeaddress["homeaddress_id"] = 100000000000000000;
-        homeaddress["latitude"] = "13.72917".toString();
-        homeaddress["longitude"] = "100.52389".toString();
+        homeaddress[TAddress[0]] = 100000000000000000;
+        homeaddress["latitude"] = "13.72917";
+        homeaddress["longitude"] = "100.52389";
         homeaddress["addressname"] = "ไม่มีข้อมูล";
         homeaddress["address"] = "ไม่มีข้อมูล";
         homeaddress["tombon"] = "ไม่มีข้อมูล";
@@ -66,6 +73,8 @@ class ProfileUserController extends GetxController implements GetxService {
         print(homeaddress);
       } else {
         homeaddress = response.body[0]['homeaddress'];
+        homeaddress["latitude"] = homeaddress["latitude"].toString();
+        homeaddress["longitude"] = homeaddress["longitude"].toString();
         print("มี homeaddress_id");
       }
 
@@ -73,8 +82,8 @@ class ProfileUserController extends GetxController implements GetxService {
       if (officeaddress["officeaddress_id"] == '') {
         officeaddress = response.body[0]['officeaddress'];
         officeaddress["officeaddress_id"] = 100000000000000000;
-        officeaddress["latitude"] = "13.72917".toString();
-        officeaddress["longitude"] = "100.52389".toString();
+        officeaddress["latitude"] = "13.72917";
+        officeaddress["longitude"] = "100.52389";
         officeaddress["addressname"] = "ไม่มีข้อมูล";
         officeaddress["address"] = "ไม่มีข้อมูล";
         officeaddress["tombon"] = "ไม่มีข้อมูล";
@@ -86,6 +95,8 @@ class ProfileUserController extends GetxController implements GetxService {
         print(officeaddress);
       } else {
         officeaddress = response.body[0]['officeaddress'];
+        officeaddress["latitude"] = officeaddress["latitude"].toString();
+        officeaddress["longitude"] = officeaddress["longitude"].toString();
         print("มี officeaddress_id");
       }
       print("homeaddress : ${homeaddress}");
@@ -95,8 +106,8 @@ class ProfileUserController extends GetxController implements GetxService {
         presentpositionaddress = response.body[0]['presentpositionaddress'];
         presentpositionaddress["presentpositionaddress_id"] =
             100000000000000000;
-        presentpositionaddress["latitude"] = "13.72917".toString();
-        presentpositionaddress["longitude"] = "100.52389".toString();
+        presentpositionaddress["latitude"] = "13.72917";
+        presentpositionaddress["longitude"] = "100.52389";
         presentpositionaddress["addressname"] = "ไม่มีข้อมูล";
         presentpositionaddress["address"] = "ไม่มีข้อมูล";
         presentpositionaddress["tombon"] = "ไม่มีข้อมูล";
@@ -108,6 +119,10 @@ class ProfileUserController extends GetxController implements GetxService {
         print(officeaddress);
       } else {
         presentpositionaddress = response.body[0]['presentpositionaddress'];
+        presentpositionaddress["latitude"] =
+            presentpositionaddress["latitude"].toString();
+        presentpositionaddress["longitude"] =
+            presentpositionaddress["longitude"].toString();
         print("มี presentpositionaddress_id");
       }
       var order_count;
@@ -136,16 +151,19 @@ class ProfileUserController extends GetxController implements GetxService {
         {'presentpositionaddress': presentpositionaddress},
         {'order_count': order_count}
       ]);
+      print("_profileuserProductList : ${_profileuserProductList}");
+      print(homeaddress["latitude"].runtimeType);
 
-      // _profileuserModel = ProfileuserModel.fromJson({
-      //   'user': user,
-      //   'phone': phone,
-      //   'homeaddress': homeaddress,
-      //   'officeaddress': officeaddress,
-      //   'presentpositionaddress': presentpositionaddress,
-      //   'order_count': order_count
-      // });
-      // print("_profileuserModel :${_profileuserModel}");
+      _profileuserModel = ProfileuserModel.fromJson({
+        'user': user,
+        'phone': phone,
+        'homeaddress': homeaddress,
+        'officeaddress': officeaddress,
+        'presentpositionaddress': presentpositionaddress,
+        'order_count': order_count
+      });
+      print(homeaddress.runtimeType);
+      print("_profileuserModel :${_profileuserModel}");
 
       _isLoading = true;
       update();
@@ -175,7 +193,7 @@ class ProfileUserController extends GetxController implements GetxService {
     Map<String, dynamic> officeaddress;
     Map<String, dynamic> presentpositionaddress;
     Map<String, dynamic> orderCount;
-    ProfileModel _profileModel;
+    ProfileuserModel _profileuserModel;
 
     var locationControllerdata = Get.find<LocationController>()
         .addressTypeList[Get.find<LocationController>().addressTypeIndex];
@@ -222,15 +240,15 @@ class ProfileUserController extends GetxController implements GetxService {
 
       //ObjectModelsavetoAPI();
 
-      _profileModel = ProfileModel(
-        user: UserModel(
+      _profileuserModel = ProfileuserModel(
+        user: User(
             userId: user["user_id"],
             username: user["username"],
             firstname: user["firstname"],
             lastname: user["lastname"],
             email: user["email"]),
         phone: phone["phone"],
-        homeaddress: HomeaddressModel(
+        homeaddress: Homeaddress(
           homeaddressId: homeaddress["homeaddress_id"],
           latitude: homeaddress["latitude"].toString(),
           longitude: homeaddress["longitude"].toString(),
@@ -243,7 +261,7 @@ class ProfileUserController extends GetxController implements GetxService {
           zipCode: homeaddress["zip_code"],
           typeId: homeaddress["type_Id"],
         ),
-        officeaddress: OfficeaddressModel(
+        officeaddress: Officeaddress(
           officeaddressId: officeaddress["officeaddress_id"],
           latitude: officeaddress["latitude"].toString(),
           longitude: officeaddress["longitude"].toString(),
@@ -256,7 +274,7 @@ class ProfileUserController extends GetxController implements GetxService {
           zipCode: officeaddress["zip_code"],
           typeId: officeaddress["type_Id"],
         ),
-        presentpositionaddress: PresentpositionaddressModel(
+        presentpositionaddress: Presentpositionaddress(
           presentpositionaddressId:
               presentpositionaddress["presentpositionaddress_id"],
           latitude: presentpositionaddress["latitude"].toString(),
@@ -275,7 +293,7 @@ class ProfileUserController extends GetxController implements GetxService {
       );
 
       Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel, addressModel)
+          .addDatatoProfileuser(_profileuserModel, addressModel)
           .then((responseModel) {
         if (responseModel.isSuccess) {
           Get.back();
@@ -322,15 +340,15 @@ class ProfileUserController extends GetxController implements GetxService {
       presentpositionaddress['longitude'] = presentpositionaddress['longitude'];
       print("presentpositionaddress in office $presentpositionaddress");
       print(homeaddress.runtimeType);
-      _profileModel = ProfileModel(
-        user: UserModel(
+      _profileuserModel = ProfileuserModel(
+        user: User(
             userId: user["user_id"],
             username: user["username"],
             firstname: user["firstname"],
             lastname: user["lastname"],
             email: user["email"]),
         phone: phone["phone"],
-        homeaddress: HomeaddressModel(
+        homeaddress: Homeaddress(
           homeaddressId: homeaddress["homeaddress_id"],
           latitude: homeaddress["latitude"].toString(),
           longitude: homeaddress["longitude"].toString(),
@@ -343,7 +361,7 @@ class ProfileUserController extends GetxController implements GetxService {
           zipCode: homeaddress["zip_code"],
           typeId: homeaddress["type_Id"],
         ),
-        officeaddress: OfficeaddressModel(
+        officeaddress: Officeaddress(
           officeaddressId: officeaddress["officeaddress_id"],
           latitude: officeaddress["latitude"].toString(),
           longitude: officeaddress["longitude"].toString(),
@@ -356,7 +374,7 @@ class ProfileUserController extends GetxController implements GetxService {
           zipCode: officeaddress["zip_code"],
           typeId: officeaddress["type_Id"],
         ),
-        presentpositionaddress: PresentpositionaddressModel(
+        presentpositionaddress: Presentpositionaddress(
           presentpositionaddressId:
               presentpositionaddress["presentpositionaddress_id"],
           latitude: presentpositionaddress["latitude"].toString(),
@@ -375,7 +393,7 @@ class ProfileUserController extends GetxController implements GetxService {
       );
 
       Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel, addressModel)
+          .addDatatoProfileuser(_profileuserModel, addressModel)
           .then((responseModel) {
         if (responseModel.isSuccess) {
           Get.back();
@@ -421,15 +439,15 @@ class ProfileUserController extends GetxController implements GetxService {
 
       print(
           "presentpositionaddress in SaveAddresstoProfileuser in other $presentpositionaddress");
-      _profileModel = ProfileModel(
-        user: UserModel(
+      _profileuserModel = ProfileuserModel(
+        user: User(
             userId: user["user_id"],
             username: user["username"],
             firstname: user["firstname"],
             lastname: user["lastname"],
             email: user["email"]),
         phone: phone["phone"],
-        homeaddress: HomeaddressModel(
+        homeaddress: Homeaddress(
           homeaddressId: homeaddress["homeaddress_id"],
           latitude: homeaddress["latitude"].toString(),
           longitude: homeaddress["longitude"].toString(),
@@ -442,7 +460,7 @@ class ProfileUserController extends GetxController implements GetxService {
           zipCode: homeaddress["zip_code"],
           typeId: homeaddress["type_Id"],
         ),
-        officeaddress: OfficeaddressModel(
+        officeaddress: Officeaddress(
           officeaddressId: officeaddress["officeaddress_id"],
           latitude: officeaddress["latitude"].toString(),
           longitude: officeaddress["longitude"].toString(),
@@ -455,7 +473,7 @@ class ProfileUserController extends GetxController implements GetxService {
           zipCode: officeaddress["zip_code"],
           typeId: officeaddress["type_Id"],
         ),
-        presentpositionaddress: PresentpositionaddressModel(
+        presentpositionaddress: Presentpositionaddress(
           presentpositionaddressId:
               presentpositionaddress["presentpositionaddress_id"],
           latitude: presentpositionaddress["latitude"].toString(),
@@ -474,7 +492,7 @@ class ProfileUserController extends GetxController implements GetxService {
       );
 
       Get.find<LocationController>()
-          .addDatatoProfileuser(_profileModel, addressModel)
+          .addDatatoProfileuser(_profileuserModel, addressModel)
           .then((response) {
         if (response.isSuccess) {
           Get.back();

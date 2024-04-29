@@ -1,9 +1,6 @@
 import 'package:ecommerce/base/cuatom_loading.dart';
 import 'package:ecommerce/base/show_custom_snackbar.dart';
 import 'package:ecommerce/controllers/auth_controller.dart';
-import 'package:ecommerce/directory/pages/resetpassword/resetpassword_page.dart';
-import 'package:ecommerce/directory/pages/sign_up/authenticate_email.dart';
-import 'package:ecommerce/directory/pages/sign_up/sigh_up_page.dart';
 import 'package:ecommerce/directory/pages/sign_up/sigh_up_widget.dart';
 import 'package:ecommerce/model/create_token_model.dart';
 import 'package:ecommerce/rountes/rounte_helper.dart';
@@ -16,16 +13,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../resetpassword/changepassword_page.dart';
-
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     late TextEditingController phoneController = TextEditingController();
     late TextEditingController passwordController = TextEditingController();
-    late List<String> signUpImages = ["corn.png", "flo.jpg", "piecelily.png"];
 
     void _loginuser(AuthController authController) {
       //var authController = Get.find<AuthController>();

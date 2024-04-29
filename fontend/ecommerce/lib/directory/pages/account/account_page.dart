@@ -11,9 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:get/get.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
@@ -171,7 +176,8 @@ class AccountPage extends StatelessWidget {
                               children: [
                                 Container(
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(
+                                        DimensionStaticHeight(context, 8)),
                                     child: BigText(
                                       text: "แก้ไขโปรไฟล์",
                                       size: 12,

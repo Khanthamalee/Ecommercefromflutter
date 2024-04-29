@@ -2,10 +2,11 @@ import 'package:ecommerce/controllers/auth_controller.dart';
 import 'package:ecommerce/controllers/location_controller.dart';
 import 'package:ecommerce/controllers/profile_controlle.dart';
 import 'package:ecommerce/directory/pages/address/address_widget.dart';
+import 'package:ecommerce/directory/pages/address/pick_address.dart';
 import 'package:ecommerce/directory/pages/sign_up/sigh_up_widget.dart';
 import 'package:ecommerce/directory/pages/sign_up/sign_up_width.dart';
 import 'package:ecommerce/model/address_model.dart';
-import 'package:ecommerce/model/profile_model.dart';
+import 'package:ecommerce/rountes/rounte_helper.dart';
 import 'package:ecommerce/util/color.dart';
 import 'package:ecommerce/util/dimensionWidget.dart';
 import 'package:ecommerce/widget/bigtext.dart';
@@ -45,6 +46,9 @@ class _AddAddressPageState extends State<AddAddressPage> {
     }
     if (Get.find<LocationController>().addressList.isNotEmpty) {
       print("addressList ไม่เป็น ลิสต์ว่าง");
+      if (Get.find<LocationController>().getAddressFromLocalStorage() == "") {
+        // Get.find<LocationController>().adduseraddress(Get.find<LocationController>().addressList.last)
+      }
       Get.find<LocationController>().getUserAddress();
       print("Get.find<LocationController>().getAddress");
 
@@ -117,6 +121,15 @@ class _AddAddressPageState extends State<AddAddressPage> {
                           target: _initialPosition,
                           zoom: 17,
                         ),
+                        onTap: (latlng) {
+                          Get.toNamed(RounteHelper.getpickAddressPage(),
+                              arguments: PickAddressPage(
+                                fromSignup: false,
+                                fromaddress: true,
+                                googleMapController:
+                                    locationcontroller.mapController,
+                              ));
+                        },
                         zoomControlsEnabled: false,
                         myLocationEnabled: true,
                         compassEnabled: false,
@@ -130,6 +143,11 @@ class _AddAddressPageState extends State<AddAddressPage> {
                             _cameraPosition = position),
                         onMapCreated: (GoogleMapController controller) {
                           locationcontroller.setMapController(controller);
+                          if (Get.find<LocationController>()
+                              .addressList
+                              .isEmpty) {
+//locationcontroller.getCurrentLocation(true,GoogleMapController);
+                          }
                         },
                       )
                     ],

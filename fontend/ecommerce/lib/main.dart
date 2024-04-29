@@ -1,6 +1,7 @@
 import 'package:ecommerce/controllers/car_controller.dart';
 import 'package:ecommerce/controllers/popular_product_controller.dart';
 import 'package:ecommerce/controllers/recommended_product_controller.dart';
+import 'package:ecommerce/directory/pages/main_goods_page.dart';
 import 'package:ecommerce/directory/pages/resetpassword/resetpassword_page.dart';
 import 'package:ecommerce/directory/pages/sign_in/sign_in.dart';
 import 'package:ecommerce/directory/pages/sign_up/authenticate_email.dart';
@@ -26,16 +27,18 @@ class MyApp extends StatelessWidget {
     return GetBuilder<PopularProductController>(builder: (_) {
       return GetBuilder<RecommendedProductController>(builder: (_) {
         return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Home-Pages',
-          //home: ResetPasswordPage(),
-          //home: SignUpPage(),
-          //home: AuthEmail(),
-          //home: SignInPage(),
+            debugShowCheckedModeBanner: false,
+            title: 'Home-Pages',
+            //home: ResetPasswordPage(),
+            //home: SignUpPage(),
+            //home: AuthEmail(),
+            //home: SignInPage(),
 
-          initialRoute: RounteHelper.getSignInPage(),
-          getPages: RounteHelper.routes,
-        );
+            initialRoute: RounteHelper.getSignInPage(),
+            getPages: RounteHelper.routes
+            //home: MainGoodPage(
+            // token: "22319401101c0f0f27b6315a51500c8aa154e1ac"));
+            );
       });
     });
   }

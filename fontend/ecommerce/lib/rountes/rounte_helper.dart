@@ -2,6 +2,7 @@ import 'package:ecommerce/directory/goods/Recommeneded_Goods_Detail.dart';
 import 'package:ecommerce/directory/goods/goods_detail_popular.dart';
 import 'package:ecommerce/directory/goods/home_page.dart';
 import 'package:ecommerce/directory/pages/address/add_address_page.dart';
+import 'package:ecommerce/directory/pages/address/pick_address.dart';
 import 'package:ecommerce/directory/pages/cart/cart_history.dart';
 import 'package:ecommerce/directory/pages/cart/cart_page.dart';
 import 'package:ecommerce/directory/pages/goods_pagebody.dart';
@@ -31,42 +32,36 @@ class RounteHelper {
   static const String cartPage = "/cart-page";
   static const String cartHistory = "/cartHistory-page";
   static const String addAddressPage = "/addAddress-Page";
+  static const String pickAddressPage = '/pickAddress-Page';
 
   static String getSplashPage(String token) => '$splashPage?token=$token';
-
   static String getSignInPage() => '$signInPage';
-
   static String getAuthEmail() => '$authEmail';
-
   static String getSignUpPage() => '$signUpPage';
-
   static String getResetPasswordPage() => '$resetPasswordPage';
-
   static String getchangePassword() => '$changePasswordPage';
-
   static String getInitial(String token) => '$initial?token=$token';
-
   static String getMainGoodPage(String token) => "$mainGoodPage?token=$token";
-
   static String getGoodsPageBody(String token) => "$goodsPageBody?token=$token";
-
   static String getPopularGoods(int pageId, String page, String token) =>
       '$popularGoods?pageId=$pageId&page=$page&token=$token';
-
   static String getRecommededGoods(int pageId, String page, String token) =>
       '$recommendedGoods?pageId=$pageId&page=$page&token=$token';
-
   static String getMyWidgetReccommended(String token) =>
       '$recommendedGoods?token=$token';
-
   static String getCartPage(int pageId, String page, String token) =>
       "$cartPage?pageId=$pageId&page=$page&token=$token";
-
   static String getCartHistory(String token) => "$cartHistory?token=$token";
-
   static String getAddAddressPage() => '$addAddressPage';
+  static String getpickAddressPage() => '$pickAddressPage';
 
   static List<GetPage> routes = [
+    GetPage(
+        name: pickAddressPage,
+        page: () {
+          PickAddressPage _pickAddressPage = Get.arguments;
+          return _pickAddressPage;
+        }),
     GetPage(
         name: splashPage,
         page: () {

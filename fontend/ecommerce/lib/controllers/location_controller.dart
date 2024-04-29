@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:ecommerce/data/repository/location_repo.dart';
 import 'package:ecommerce/model/Profileusermodel.dart';
 import 'package:ecommerce/model/address_model.dart';
-import 'package:ecommerce/model/positiontoMapModel.dart';
-import 'package:ecommerce/model/profile_stringModel.dart';
 import 'package:ecommerce/model/response_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,7 +18,7 @@ class LocationController extends GetxController implements GetxService {
   Placemark _placemark = Placemark();
   Placemark _pickPlacemark = Placemark();
   Placemark get placemark => _placemark;
-  Placemark get pickplacemark => _pickPlacemark;
+  Placemark get pickPlacemark => _pickPlacemark;
   List<ProfileuserModel> _addressList = [];
   List<ProfileuserModel> get addressList => _addressList;
   late List<ProfileuserModel> _allAddressList;
@@ -29,8 +27,8 @@ class LocationController extends GetxController implements GetxService {
   List<String> get addressTypeList => _addressTypeList;
   int _addressTypeIndex = 0;
   int get addressTypeIndex => _addressTypeIndex;
-
   late GoogleMapController _mapController;
+  GoogleMapController get mapController => _mapController;
   bool _updateAddressData = true;
   bool _changeAddress = true;
 
@@ -52,7 +50,9 @@ class LocationController extends GetxController implements GetxService {
               latitude: position.target.latitude,
               longitude: position.target.longitude,
               timestamp: DateTime.now(),
+              altitudeAccuracy: 1,
               heading: 1,
+              headingAccuracy: 1,
               accuracy: 1,
               altitude: 1,
               speedAccuracy: 1,
@@ -62,7 +62,9 @@ class LocationController extends GetxController implements GetxService {
               latitude: position.target.latitude,
               longitude: position.target.longitude,
               timestamp: DateTime.now(),
+              altitudeAccuracy: 1,
               heading: 1,
+              headingAccuracy: 1,
               accuracy: 1,
               altitude: 1,
               speedAccuracy: 1,
@@ -80,6 +82,8 @@ class LocationController extends GetxController implements GetxService {
       } catch (e) {
         print(e);
       }
+      _loading = false;
+      update();
     }
   }
 
@@ -99,9 +103,9 @@ class LocationController extends GetxController implements GetxService {
   }
 
   late Map<String, dynamic> _getAddress;
-  Map get getAddress => _getAddress;
-  ProfileModel getUserAddress() {
-    late ProfileModel _profileModel;
+  Map<String, dynamic> get getAddress => _getAddress;
+  AddressModel getUserAddress() {
+    late AddressModel _addressModel;
     print("locationRepo.getUserAddress() is ");
     print("jsonEncode(locationRepo.getUserAddress())");
     print(jsonDecode(locationRepo.getUserAddress()));
@@ -110,14 +114,14 @@ class LocationController extends GetxController implements GetxService {
     print("_getAddress['latitude'] :${_getAddress["latitude"]}");
 
     try {
-      _profileModel =
-          ProfileModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
-      print("_profileModel");
-      print(_profileModel);
+      _addressModel =
+          AddressModel.fromJson(jsonDecode(locationRepo.getUserAddress()));
+      print("_profileuserModel");
+      print(_addressModel);
     } catch (e) {
       print("e in getUserAddress :${e}");
     }
-    return _profileModel;
+    return _addressModel;
   }
 
   void setAddressTypeIndex(int index) {
@@ -129,12 +133,13 @@ class LocationController extends GetxController implements GetxService {
   List<dynamic> get getAddressList => _getAddressList;
 
   Future<ResponseModel> addDatatoProfileuser(
-      ProfileModel profileModel, AddressModel addressModel) async {
+      ProfileuserModel profileuserModel, AddressModel addressModel) async {
     _loading = true;
     update();
     print(
-        "profileuserModel.toJson() in addDatatoProfileuser  : ${profileModel.toJson()}");
-    Response response = await locationRepo.addDatatoProfileuser(profileModel);
+        "profileuserModel.toJson() in addDatatoProfileuser  : ${profileuserModel.toJson()}");
+    Response response =
+        await locationRepo.addDatatoProfileuser(profileuserModel);
     print("addDatatoProfileuser");
     print("response.statusCode in addDatatoProfileuser${response.statusCode}");
     print("response.body in addDatatoProfileuser${response.body}");
@@ -167,15 +172,52 @@ class LocationController extends GetxController implements GetxService {
       _addressList = [];
       _allAddressList = [];
 
-      response.body.forEach((element) {
-        print("element in getaddressList locationController ");
-        print(element);
-        _addressList.add(ProfileuserModel.fromJson(element));
-        _allAddressList.add(ProfileuserModel.fromJson(element));
+      var user = response.body[0]["user"];
+      print(user);
+      var phone = response.body[0]["phone"];
+      print(phone);
+      var order_count = response.body[0]["order_count"];
+      print(order_count);
+      var editHAD = response.body[0]["homeaddress"];
+      print(editHAD);
+      var editOFA = response.body[0]["officeaddress"];
+      print(editOFA);
+      var editPPA = response.body[0]["presentpositionaddress"];
+      print(editPPA);
 
-        print("_addressList : ${_addressList}");
-        print("_allAddressList : ${_allAddressList}");
-      });
+      editHAD["latitude"] = editHAD["latitude"].toString();
+      editHAD["longitude"] = editHAD["longitude"].toString();
+      editOFA["latitude"] = editOFA["latitude"].toString();
+      editOFA["longitude"] = editOFA["longitude"].toString();
+      editPPA["latitude"] = editPPA["latitude"].toString();
+      editPPA["longitude"] = editPPA["longitude"].toString();
+      print(response.body[0]["homeaddress"]["latitude"].runtimeType);
+      print(response.body);
+
+      Map<String, dynamic> NewList = {
+        'user': user,
+        'phone': phone,
+        'homeaddress': editHAD,
+        'officeaddress': editOFA,
+        'presentpositionaddress': editPPA,
+        'order_count': order_count
+      };
+
+      _addressList.add(ProfileuserModel.fromJson(NewList));
+      _allAddressList.add(ProfileuserModel.fromJson(NewList));
+
+      print("_addressList : ${_addressList}");
+      print("_allAddressList : ${_allAddressList}");
+
+      // response.body.forEach((element) {
+      //   print("element in getaddressList locationController ");
+      //   print(element);
+      //   _addressList.add(ProfileuserModel.fromJson(element));
+      //   _allAddressList.add(ProfileuserModel.fromJson(element));
+
+      //   print("_addressList : ${_addressList}");
+      //   print("_allAddressList : ${_allAddressList}");
+      // });
 
       responseModel =
           ResponseModel(true, "มี _addressList และ _allAddressList");
@@ -194,8 +236,14 @@ class LocationController extends GetxController implements GetxService {
     return await locationRepo.adduseraddress(userAddress);
   }
 
+  String getAddressFromLocalStorage() {
+    return locationRepo.getUserAddress();
+  }
+
+// Logout
   void removedProfileUserData() {
     _addressList = [];
+    _allAddressList = [];
     locationRepo.removedProfileUserData();
     update();
   }

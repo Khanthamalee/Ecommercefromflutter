@@ -53,7 +53,7 @@ dependencies:
   email_otp: ^2.0.1
   google_maps_flutter: ^2.2.6
   geocoding: ^2.1.0
-  geolocator: ^9.0.2
+  geolocator: ^10.1.0
 
 flutter_icons:
   android : true
